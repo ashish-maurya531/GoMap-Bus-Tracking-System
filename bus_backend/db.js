@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://eren820:eren820@atlascluster.b11ukxt.mongodb.net/', {useNewUrlParser: true});
+mongoose.connect('mongodb+srv://eren820:eren820@atlascluster.b11ukxt.mongodb.net/');
 var conn = mongoose.connection;
 conn.on('connected', function() {
     console.log('database is connected successfully');
