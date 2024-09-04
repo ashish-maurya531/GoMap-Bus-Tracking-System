@@ -1,0 +1,794 @@
+
+
+/*--------------------------------------------------------*/
+/*Login page*/
+
+.login-page-body-container {
+  background: url("./src/assets/login_back.jpg") no-repeat center center/cover;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-page-location-icon {
+  height: 80px;
+  margin-top: -20px;
+}
+
+h2.login-page-fw-bold {
+  font-size: 4em;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.login-page-form {
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 40px;
+  height: 40%;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.login-page-title {
+  margin-top: -10px;
+  font-size: 2.5em;
+  /* margin-bottom: 10px; */
+  color: white;
+  font-weight: bold;
+  
+}
+
+.login-page-subtitle {
+  margin-top: 10px;
+  font-size: 1em;
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.login-page-input {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1em;
+  outline: none !important;
+}
+.login-page-input:focus{
+  border:1px solid white;
+  /* outline: #218838; */
+}
+
+
+.login-page-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.login-page-forgot-password {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9em;
+  text-decoration: none;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.login-page-button {
+  width: 40%;
+  margin-top: 20px;
+  padding: 10px;
+  
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-color: white;
+}
+
+.login-page-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  scale:0.9;
+}
+
+
+@media (max-width: 600px) {
+  .login-page-form {
+    height: 50%;
+    width: 250px;
+  }
+}
+
+
+
+
+
+/*-----------------------------------------------------------*/
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1d2634;
+  color: #9e9ea4;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.icon {
+  vertical-align: middle;
+  line-height: 1px;
+  font-size: 20px;
+}
+.icon_header {
+  vertical-align: middle;
+  line-height: 1px;
+  font-size: 26px;
+}
+.icon, .icon_header {
+  margin-right: 5px;
+}
+
+.close_icon {
+  color: red;
+  margin-left: 30px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 260px 1fr 1fr 1fr;
+  grid-template-rows: 0.2fr 3fr;
+  grid-template-areas:
+    'sidebar header header header'
+    'sidebar main main main';
+  height: 100vh;
+}
+
+/* Header  */
+.header {
+  grid-area: header;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 30px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.menu-icon {
+  display: none;
+}
+/* End Header  */
+
+/* Sidebar  */
+#sidebar {
+  grid-area: sidebar;
+  height: 100%;
+  background-color: #263043;
+  overflow-y: auto;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.sidebar-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px 0px 30px;
+  margin-bottom: 30px;
+}
+
+.sidebar-title > span {
+  display: none;
+}
+
+.sidebar-brand {
+  margin-top: 15px;
+  font-size: 30px;
+  font-weight: 700;
+}
+.side-logo{
+  font-size: 30px;
+}
+
+.sidebar-list {
+  padding: 0;
+  list-style-type: none;
+}
+
+.sidebar-list-item {
+  padding: 20px 20px 20px 20px;
+  font-size: 18px;
+}
+
+.sidebar-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+.sidebar-list-item > a {
+  text-decoration: none;
+  color: #9e9ea4;
+}
+
+.sidebar-responsive {
+  display: inline !important;
+  position: absolute;
+  /*
+    we want the z-index of the sidebar higher so that
+    the charts are not showing over the sidebar 
+    on small screens
+  */
+  z-index: 12 !important;
+}
+
+/* End Sidebar  */
+
+
+/* Main  */  
+.main-container {
+  grid-area: main;
+  overflow-y: auto;
+  padding: 20px 20px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.main-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+  margin: 15px 0;
+  
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 8px 15px;
+  border-radius: 5px;
+  transition: all 0.1s ease-out;
+}
+.card:hover {
+  background-color: transparent;
+  opacity: .9;
+  scale: 1.07;
+  cursor: pointer;
+}
+
+.card:first-child {
+  background-color: #2962ff;
+}
+
+.card:nth-child(2) {
+  background-color: #ff6d00;
+}
+
+.card:nth-child(3) {
+  background-color: #2e7d32;
+}
+
+.card:nth-child(4) {
+  background-color: #d50000;
+}
+
+.card-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-inner > .card_icon {
+  font-size: 25px;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 60px;
+  height: 300px;
+}
+
+/* End Main  */
+
+
+/* Medium <= 992px */
+  
+@media screen and (max-width: 992px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 3fr;
+    grid-template-areas:
+      'header'
+      'main';
+  }
+
+  #sidebar {
+    display: none;
+  }
+
+  .menu-icon {
+    display: inline;
+  }
+
+  .sidebar-title > span {
+    display: inline;
+  }
+}
+/* Small <= 768px */
+  
+@media screen and (max-width: 768px) {
+  .main-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+
+  .charts {
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+  }
+}
+
+/* Extra Small <= 576px */
+
+@media screen and (min-width: 992px) {
+  .a{
+    visibility: hidden;
+  }
+}
+
+
+
+.map-container{
+  height: 30rem;
+  width:100%;
+  background-color: #263043;
+  /* border-radius: 10px */
+
+
+}
+
+.map-container iframe{
+
+    border: none;
+    border-radius: 7px;
+ 
+  
+}
+.a{
+  font-size: 30px;
+  color: #9e9ea4;
+  font-weight: bolder;
+}
+
+#span-sidebar-icon{
+  position: relative;
+  top:5px
+}
+/* 
+.route-container{
+  position :absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-30%,-50%);
+  height:60%;
+  width:40%;
+  background-color: #d50000;
+}
+
+.route-container{
+  color: #9e9ea4;
+  font-weight: bolder;
+  font-size: 20px;
+} */
+/* App.css or your main CSS file */
+/* App.css or your main CSS file */
+
+/* App.css or your main CSS file */
+
+.route-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #263043;
+  border: 1px solid #263043;
+  border-radius: 8px;
+  width: 90%; /* Use percentage to make it flexible */
+  max-width: 600px;
+  margin: 20px auto;
+  box-shadow: 0 4px 80px #232830;
+}
+
+.route-container textarea.route-textarea {
+  width: 30em; /* Edge-to-edge with small padding */
+  height: 25em; /* Height of the textarea */
+  padding: 10px; /* Small padding inside the textarea */
+  margin-bottom: 20px; /* Space below the textarea */
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem; /* Use rem for better scalability */
+  resize: none;
+  background-color: #3a4660;
+  color: #fff;
+  border: #1d2634;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 2px;
+  
+}
+.route-textarea:focus{
+  
+  outline: none;
+}
+
+
+
+
+.route-container button {
+  
+  padding: 12px 24px; /* Slightly larger padding */
+  margin: 5px;
+  
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 50%; /* Full width for buttons */
+}
+
+.route-container button:hover {
+  background-color: red;
+}
+
+.route-container button:active {
+  transform: scale(0.90);
+}
+.route-container button:last-child {
+  background-color: #6c757d;
+}
+
+.route-container button:last-child:hover {
+  background-color: #5a6268;
+}
+.route-container button:last-child:active {
+  transform: scale(0.90);
+}
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+  .route-container {
+      padding: 15px;
+  }
+
+  .route-container textarea.route-textarea {
+    width:19em;
+      height: 15em; /* Adjusted height for smaller screens */
+      font-size: 0.9rem;
+  }
+
+  .route-container button {
+      padding: 10px 20px; /* Reduced padding */
+      font-size: 0.9rem;
+  }
+}
+
+
+
+/* driver container*/
+
+
+.addDriver-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 400px; /* Set a maximum width for the container */
+  margin: 0 auto; /* Center the container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for aesthetics */
+  border-radius: 8px; 
+  background-color: #263043;
+  margin-top: -20px;
+  margin-bottom: 10px;
+
+}
+
+.addDriver-container div {
+  width: 90%; 
+  margin-bottom: 15px; 
+}
+
+.addDriverInput {
+  width: 100%; /* Full width of the container */
+  padding: 10px; /* Padding inside the input */
+  margin-bottom: 10px; /* Space between inputs */
+  border: 1px solid #3a4660; 
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #3a4660;
+  color: white !important;
+ 
+}
+.addDriverInput ::placeholder{
+  color: aliceblue;
+}
+.addDriverInput:focus{
+  outline: none; 
+  background-color: #263043;
+
+  
+}
+
+
+/* Hide the spinner in WebKit browsers (Chrome, Safari, etc.) */
+.addDriverInput[type="number"]::-webkit-outer-spin-button,
+.addDriverInput[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide the spinner in Firefox */
+.addDriverInput[type="number"] {
+    -moz-appearance: textfield;
+}
+
+
+
+
+
+.addDriver-container button {
+  width: 50%; /* Full width of the container */
+  padding: 10px;
+  background-color: #007BFF; /* Button color */
+  color: white; /* Button text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth color transition */
+}
+
+.addDriver-container button:hover {
+  background-color: red;
+}
+.addDriver-container button:active {
+  transform: scale(0.90);
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 480px) {
+  .addDriver-container {
+      padding: 15px;
+      max-width: 100%; /* Full width on small screens */
+  }
+
+  .addDriverInput {
+      font-size: 14px; 
+ 
+  }
+
+  .addDriver-container button {
+      font-size: 14px; 
+  }
+}
+
+
+
+
+.driverList-container-search-box {
+  display: flex;
+ 
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  gap: 10px; 
+  max-width: 50%; 
+  margin: 0 auto; 
+}
+
+.driverList-search-filter, 
+.driverList-search-input, 
+.driverList-search-button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #263043; 
+  
+  outline: none;
+  background-color: #263043;
+  color: white;
+
+}
+.driverList-search-filter:focus{
+  border: none !important;
+}
+.driverList-search-input :focus{
+  
+  background-color: #263043;
+  outline: none;
+ 
+  
+
+}
+
+.driverList-search-filter {
+  width: 90px;
+  
+  max-width:90px ;/* Fixed width for the dropdown */
+}
+
+.driverList-search-input {
+  flex: 1; /* Input takes up remaining space */
+  min-width: 160px;
+  width:40px /* Ensure input doesn't get too small */
+}
+
+.driverList-search-button {
+  max-width: 40px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 41px;
+}
+
+
+.driverList-search-button:active{
+  transform: scale(0.90);
+  
+}
+@media (max-width: 768px) {
+  .driverList-container-search-box {
+      
+      align-items: stretch; 
+      max-width: 97%;
+  }
+
+  .driverList-search-filter, 
+  .driverList-search-input, 
+  .driverList-search-button {
+      width: 100%; 
+      margin-bottom: 10px; 
+  }
+}
+
+
+/*driver list*/
+
+
+
+
+
+/* .driverList-container {
+  
+
+} */
+
+
+.driverList-container{
+  height: 48vh;
+  width:100%;
+  background-color: #3a4660;
+}
+
+.driverList-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+.driverList-table tbody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  /* margin-top: 5px; */
+  max-height:36vh;
+  overflow-y: auto;
+  flex-grow: 1;
+  
+
+
+  
+  
+}
+
+
+.driverList-table th,
+.driverList-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid grey;
+  text-align: center;
+  width:22em;
+  /* border-radius: 20px; */
+
+}
+
+.driverList-table th {
+  background-color: #007BFF;
+  color: white;
+  /* width: 13rem; */
+}
+
+
+.driverList-edit-button,
+.driverList-delete-button {
+  padding: 6px 12px;
+  margin-right: 5px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width:4rem
+}
+
+.driverList-edit-button {
+  background-color: #28a745;
+  color: white;
+
+}
+
+.driverList-edit-button:hover {
+  background-color: #218838;
+}
+
+.driverList-delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.driverList-delete-button:hover {
+  background-color: #c82333;
+}
+
+
+@media (max-width: 768px) {
+  
+.driverList-edit-button
+{  margin-bottom: 4px;
+
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
