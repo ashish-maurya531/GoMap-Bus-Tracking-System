@@ -1,94 +1,122 @@
-import React, { useEffect, useRef, useState } from 'react';
+
+// DriverComponent.jsx
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import DriverList from "./DriverListComponent";
-// import getDriverList from "./DriverListComponent";
-
-
-
-//get current id no to show
-
+import DriverList from './DriverListComponent';
 
 function DriverComponent() {
-    const [id, setId] = useState(0);
-    const [dName, setdName] = useState(null);
-    const [dPhoneNo, setdPhoneNo] = useState(null);
+    const [dName, setdName] = useState('');
+    const [dPhoneNo, setdPhoneNo] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newDriverDetails, setNewDriverDetails] = useState(null);
+    //this is the reference to function to call
     const driverListRef = useRef();
 
     const driverCount = async () => {
         try {
             const response = await axios.get('http://localhost:5000/idCount');
-            console.log("driver Id count=" + response.data.data);
-            // setId(parseInt(response.data.data)+1);
-            return response?.data?.data
-        }
-        catch (error) {
-
+            return response?.data?.data;
+        } catch (error) {
             console.error(error);
         }
-    }
-    
+    };
 
+    const handleNameChange = (e) => {
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Allow only alphabets and spaces
+        setdName(value);
+    };
+
+    const handlePhoneNoChange = (e) => {
+        const value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+        if (value.length <= 10) {
+            setdPhoneNo(value);
+        }
+    };
 
     const addNewDriver = async () => {
-        // console.log("test111", dName, dPhoneNo, await driverCount())
-        let driverCountData = await driverCount();
+        const driverCountData = await driverCount();
 
         try {
-            const response = await axios.post('http://localhost:5000/addDriver', {
+            await axios.post('http://localhost:5000/addDriver', {
                 driverId: driverCountData + 1,
                 dName,
                 dPhoneNo,
             });
-            toast.success("New Driver Added Successfully");
-            if (driverListRef.current){
-                driverListRef.current.getDriverList(); // Execute the function in DriverListComponent
+
+            setNewDriverDetails({
+                id: driverCountData + 1,
+                name: dName,
+                phoneNo: dPhoneNo,
+            });
+            setIsModalOpen(true);
+
+            toast.success('New Driver Added Successfully');
+            //this is the reference to the function which is in driverlistcomponent.jsx
+            if (driverListRef.current) {
+                driverListRef.current.getDriverList();
             }
         } catch (error) {
-            toast.error("Failed to Add New Driver");
+            toast.error('Failed to Add New Driver');
             console.error(error);
         }
+    };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setdName('');
+        setdPhoneNo('');
+    };
 
-
-
-    }
-
+    const isSaveDisabled = !dName || dPhoneNo.length !== 10;
 
     return (
         <>
-            <h1>
-                + Add New Driver
-            </h1>
+            <h1>+ Add New Driver</h1>
             <div className="addDriver-container">
                 <div>
-                    <input type="text" onChange={(e)=> {
-                        setdName(e.target.value);
-                    }}  className="addDriverInput"  placeholder="enter driver name" required />
+                    <input 
+                        type="text" 
+                        value={dName}
+                        onChange={handleNameChange}  
+                        className="addDriverInput"  
+                        placeholder="Enter driver name" 
+                        required 
+                    />
                     <input
-                    onChange={(e) => {
-                        setdPhoneNo(e.target.value);
-                    }}
-                    type="number" className="addDriverInput"  placeholder="enter driver phoneNo"
-                        required />
+                        type="text"
+                        value={dPhoneNo}
+                        onChange={handlePhoneNoChange}
+                        className="addDriverInput"
+                        placeholder="Enter driver phone number"
+                        required 
+                    />
                 </div>
-                <button onClick={addNewDriver}>Save</button>
-
-
+                <button onClick={addNewDriver} disabled={isSaveDisabled}>Save</button>
             </div>
-            <hr></hr>
+            <hr />
 
-
-            <h1>
-                Drivers List
-            </h1>
-            <DriverList ref ={driverListRef}  />
-            <hr></hr>
+            <h1>Drivers List</h1>
+            <DriverList ref={driverListRef} />
+            <hr />
             <ToastContainer />
 
+            {/* Modal */}
+            {isModalOpen && (
+                <div className="DriverComponent-modal">
+                    <div className="DriverComponent-modal-content">
+                        <h1>New Driver Details</h1>
+                        <p>Driver ID: D{newDriverDetails?.id}</p>
+                        <p>Name: {newDriverDetails?.name}</p>
+                        <p>Phone No:{newDriverDetails?.phoneNo}</p>
+                        <p className='modal-info'>⚠️Please remember your Driver ID.</p>
+                        <button onClick={closeModal}>OK</button>
+                    </div>
+                </div>
+            )}
         </>
-    )
+    );
 }
 
 export default DriverComponent;

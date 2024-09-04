@@ -773,7 +773,64 @@ body {
 }
 }
 
+/*driver component modal*/
 
+.DriverComponent-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.DriverComponent-modal-content {
+  background-color: #2d3648;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  border-radius: 15px;
+  font-size: 14px;
+
+}
+.DriverComponent-modal-content p{
+  color:white;
+  font-size: 18px;
+}
+.DriverComponent-modal-content .modal-info{
+  color: red;
+}
+
+.DriverComponent-modal-content button {
+  width: 20%; /* Full width of the container */
+  padding: 10px;
+  background-color: #007BFF; /* Button color */
+  color: white; /* Button text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.DriverComponent-modal-content button:hover {
+  background-color: red;
+}
+.DriverComponent-modal-content button:active {
+  transform: scale(0.90);
+}
+
+
+@media(max-width:480px){
+  .DriverComponent-modal-content{
+    max-width: 320px;
+    width: 90%;
+  }
+}
 
 
 
