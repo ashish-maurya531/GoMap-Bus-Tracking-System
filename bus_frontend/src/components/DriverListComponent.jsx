@@ -279,10 +279,13 @@ const DriverList = forwardRef((props, ref) => {
     useEffect(() => {
         getDriverList();
     }, []);
-
+    //very imp this is to link the driver list component to main driver component
     useImperativeHandle(ref, () => ({
         getDriverList,
     }));
+
+
+    //up to this point
     const debounce = (func, delay) => {
         let timeoutId;
         return (...args) => {
@@ -331,8 +334,10 @@ const DriverList = forwardRef((props, ref) => {
             await axios.delete(`http://localhost:5000/deleteDriver/${driverToDelete.id}`);
             setDrivers(drivers.filter(driver => driver.id !== driverToDelete.id));
             toast.success('Driver deleted successfully');
+            // toast.dismiss(1000);
         } catch (error) {
             toast.error('Failed to delete driver');
+            toast.dismiss();
             console.error(error);
         }
         closeDeleteModal();
@@ -347,11 +352,13 @@ const DriverList = forwardRef((props, ref) => {
             setDrivers(drivers.map(driver => driver.id === driverToEdit.id ? { ...driver, name: editName, phoneNo: editPhoneNo } : driver));
             toast.success('Driver details updated successfully',{pauseOnHover: false,
                 pauseOnFocusLoss: false});
+            toast.dismiss();
         } catch (error) {
             toast.error('Failed to update driver details',{
                 pauseOnHover: false,
         pauseOnFocusLoss: false
             });
+            toast.dismiss();
             console.error(error);
         }
         closeEditModal();
@@ -412,7 +419,7 @@ const DriverList = forwardRef((props, ref) => {
                 >
                     <span className="material-symbols-outlined">search</span>
                 </button>
-                <ToastContainer/>
+                
             </div>
             <div className="driverList-container-list"></div>
             <table className="driverList-table">
@@ -448,26 +455,28 @@ const DriverList = forwardRef((props, ref) => {
                     ))}
                 </tbody>
             </table>
-            <ToastContainer/>
+        
            
 
             {/* Delete Confirmation Modal */}
             {isDeleteModalOpen && (
-                <div className="DriverListComponent-modal">
-                    <div className="DriverListComponent-modal-content">
+                <div className="driver-update-modal">
+                    <div className="driver-update-modal-content">
                         <h2>Confirm Deletion</h2>
                         <p>Are you sure you want to delete this driver?</p>
-                        <button onClick={handleDelete}>Delete</button>
-                        <button onClick={closeDeleteModal}>Cancel</button>
+                        <div className='driver-update-modal-actions'>
+                        <button className="save-btn" onClick={handleDelete}>Delete</button>
+                        <button  onClick={closeDeleteModal}>Cancel</button>
+                        </div>
                     </div>
                 </div>
             )}
-            <ToastContainer/>
+            
 
             {/* Edit Driver Modal */}
             {isEditModalOpen && (
-                <div className="DriverListComponent-modal">
-                    <div className="DriverListComponent-modal-content">
+                <div className="driver-update-modal">
+                    <div className="driver-update-modal-content">
                         <h2>Edit Driver Details</h2>
                         <p>Driver ID: {driverToEdit?.id}</p>
                         <input 
@@ -485,11 +494,13 @@ const DriverList = forwardRef((props, ref) => {
                             }} 
                             placeholder="Enter new phone number"
                         />
-                        <button onClick={handleEditSave} disabled={isEditSaveDisabled}>Save</button>
-                        <button onClick={closeEditModal}>Close</button>
+                        <div className='driver-update-modal-actions'>
+                        <button className="save-btn" onClick={handleEditSave} disabled={isEditSaveDisabled}>Save</button>
+                        <button   onClick={closeEditModal}>Close</button>
+                        </div>
                     </div>
                 </div>
-            )}<ToastContainer/>
+            )}
             
         </div>
         <ToastContainer/></>
