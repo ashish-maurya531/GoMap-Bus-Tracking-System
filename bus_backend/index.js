@@ -178,6 +178,58 @@ app.get('/getdriver', async (req, res) => {
 
 })
 
+//delete driver by id
+
+
+app.delete('/deleteDriver/:id', async (req, res) => {
+    const id=req.params.id;
+    console.log(id);
+    console.log(typeof (id))
+    try {
+        const result= await client.db("location").collection("driverInfo").deleteOne({id:id});
+        console.log(result)
+        res.status(202).json({message:"Driver deleted successfully",result});
+
+    } catch (error) {
+        res.status(500).json({message:"Error deleting the driver"});
+        
+    }
+
+}
+)
+
+//edit driver by id
+app.put('/updateDriver/:id', async (req, res) =>{
+    const id=req.params.id;
+    const {name,phoneNo}=req.body;
+
+    try {
+        const result= await client.db("location").collection("driverInfo").updateOne(
+
+            { id: id },   // Filter
+            { $set: { name: name,
+                phoneNo: phoneNo }       
+             }     
+
+
+
+        );
+        console.log(result)
+        if (result.matchedCount===1){
+            res.status(202).json({message:"Driver updated successfully",result});
+
+        }
+        else{
+            res.status(404).json({message:"Driver not found"});
+        }
+
+    } catch (error) {
+        res.status(500).json({message:"Error updating the driver"});
+        
+    }
+
+
+})
 
 
 

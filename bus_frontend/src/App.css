@@ -834,8 +834,34 @@ body {
 
 
 
+/*driver list container modal*/
 
 
+
+.DriverListComponent-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.DriverListComponent-modal-content {
+  background-color: #2d3648;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  border-radius: 15px;
+  font-size: 14px;
+
+}
 
 
 

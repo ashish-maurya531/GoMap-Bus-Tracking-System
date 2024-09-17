@@ -1,46 +1,5 @@
 
 
-// import './App.css';
-// import { BrowserRouter as Router, Route, Switch,Navigate } from 'react-router-dom';
-// import { AuthProvider } from './components/AuthContext';
-// import ProtectedRoute from './components/ProtectedRoute';
-// import Home from './pages/dashboard';
-// import Login from './pages/login';
-
-
-// // import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-
-// function App() {
-    
-
-//     return (
-     
-
-
-//         <Router>
-            
-//                 <Routes>
-                  
-//                     <Route index element={<Navigate to='/login' />} />
-//                     <Route path="/login" element={<Login />} />
-                   
-//                     <Route path="/dashboard" element={<Home />} />
-
-
-                    
-                  
-
-                      
-                
-//                 </Routes>
-            
-//         </Router>
-//     );
-// }
-
-// export default App;
-
-
 
 // src/App.jsx
 import './App.css';
