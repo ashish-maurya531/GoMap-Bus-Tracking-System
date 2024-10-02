@@ -232,9 +232,37 @@ app.put('/updateDriver/:id', async (req, res) =>{
 })
 
 
+//get current driver status (running a bus or idle)
 
 
-
-
+app.get('/getdriverStatus/:id',async(req,res)=>{
+    const driverid = req.params.id;
+    console.log(driverid)
+    try{
+        const result = await client.db("location").collection("driverloc").findOne({driver_id:driverid});
+        // console.log("result: " + JSON.stringify(result));
+    if (result) {
+        res.json({
+            status: 200,
+            data: result,
+            message:"driver is running the bus"
+        }) 
+    }
+ 
+    else{
+        res.json({
+            status: 201,
+            message: "Driver is idle"
+        })
+    }
+    } 
+    catch (err) {
+        res.json({
+            status: 500,
+            message: "Error getting driver status"
+        })
+    console.log(err);
+    }
+})
 
 

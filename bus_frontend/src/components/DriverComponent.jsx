@@ -5,12 +5,14 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DriverList from './DriverListComponent';
+import {userCreation} from '../relem/relemService.js';
 
 function DriverComponent() {
     const [dName, setdName] = useState('');
     const [dPhoneNo, setdPhoneNo] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newDriverDetails, setNewDriverDetails] = useState(null);
+  
     //this is the reference to function to call
     const driverListRef = useRef();
 
@@ -25,6 +27,8 @@ function DriverComponent() {
 
     const handleNameChange = (e) => {
         const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Allow only alphabets and spaces
+        // const value = e.target.value
+
         setdName(value);
     };
 
@@ -44,21 +48,37 @@ function DriverComponent() {
                 dName,
                 dPhoneNo,
             });
-
+            
             setNewDriverDetails({
                 id: driverCountData + 1,
                 name: dName,
                 phoneNo: dPhoneNo,
             });
+      
+         
+            try{
+                userCreation(`${"D"+(driverCountData+1)}`,dPhoneNo);
+                // userCreation(`${driverCountData+1}`,dPhoneNo);
+
+                
+            }
+            catch(error){
+                console.error("relem user error",error);
+            }
+          
+        
+           
+          
+           
             setIsModalOpen(true);
 
-            toast.success('New Driver Added Successfully');
+            // toast.success('New Driver Added Successfully');
             //this is the reference to the function which is in driverlistcomponent.jsx
             if (driverListRef.current) {
                 driverListRef.current.getDriverList();
             }
         } catch (error) {
-            toast.error('Failed to Add New Driver');
+            // toast.error('Failed to Add New Driver');
             console.error(error);
         }
     };

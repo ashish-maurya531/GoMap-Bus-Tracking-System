@@ -248,13 +248,19 @@
 
 
 
+//api key - 6XmBXYxW6barf7u4zHJE8Pk3cAZWBr3FfDzEvrVYe4CFjjP7L9OiBIubepLoJiHJ
 
+// https://ap-south-1.aws.data.mongodb-api.com/app/data-xowlmky/endpoint/data/v1
 
+// 4TrBbutU9Eshiq2ZUCaEnbIcuDn2glvhPc9aQeFKdePyLVZGqS0uLB8vKobGM0Dc
 
+// application-0-raildng
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {deleteRelemUser,updateRelemUser} from '../relem/relemService.js';
+
 
 const DriverList = forwardRef((props, ref) => {
     const [drivers, setDrivers] = useState([]);
@@ -266,6 +272,8 @@ const DriverList = forwardRef((props, ref) => {
     const [driverToEdit, setDriverToEdit] = useState(null);
     const [editName, setEditName] = useState('');
     const [editPhoneNo, setEditPhoneNo] = useState('');
+   
+
 
     const getDriverList = async () => {
         try {
@@ -331,10 +339,35 @@ const DriverList = forwardRef((props, ref) => {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:5000/deleteDriver/${driverToDelete.id}`);
-            setDrivers(drivers.filter(driver => driver.id !== driverToDelete.id));
-            toast.success('Driver deleted successfully');
+
+            const driverstatus=await axios.get(`http://localhost:5000/getdriverStatus/${driverToDelete.id}`)
+            
+        
+            if (driverstatus.data.status==200){
+                console.log("Cannot delete driver, driver is running the bus");
+                return;
+            }
+            else if (driverstatus.data.status==201){
+                await axios.delete(`http://localhost:5000/deleteDriver/${driverToDelete.id}`);
+            
+                try{
+                    deleteRelemUser(driverToDelete.id,driverToDelete.phoneNo);
+                }
+                catch(error){
+                    console.error('Failed to delete user from Realm', error);
+                }
+                setDrivers(drivers.filter(driver => driver.id !== driverToDelete.id));
+            // toast.success('Driver deleted successfully');
             // toast.dismiss(1000);
+
+            }
+            else{
+                console.log(driverstatus.message)
+            }
+
+
+
+            
         } catch (error) {
             toast.error('Failed to delete driver');
             toast.dismiss();
@@ -345,14 +378,21 @@ const DriverList = forwardRef((props, ref) => {
 
     const handleEditSave = async () => {
         try {
-            await axios.put(`http://localhost:5000/updateDriver/${driverToEdit.id}`, {
-                name: editName,
-                phoneNo: editPhoneNo
-            });
-            setDrivers(drivers.map(driver => driver.id === driverToEdit.id ? { ...driver, name: editName, phoneNo: editPhoneNo } : driver));
-            toast.success('Driver details updated successfully',{pauseOnHover: false,
-                pauseOnFocusLoss: false});
-            toast.dismiss();
+            // await axios.put(`http://localhost:5000/updateDriver/${driverToEdit.id}`, {
+            //     name: editName,
+            //     phoneNo: editPhoneNo
+            // });
+            // setDrivers(drivers.map(driver => driver.id === driverToEdit.id ? { ...driver, name: editName, phoneNo: editPhoneNo } : driver));
+            // toast.success('Driver details updated successfully',{pauseOnHover: false,
+            //     pauseOnFocusLoss: false});
+            // toast.dismiss();
+            try{
+                updateRelemUser(driverToEdit.id,driverToEdit.phoneNo);
+
+            }
+            catch(error){
+                console.error('Failed to update user in Realm', error);
+            }
         } catch (error) {
             toast.error('Failed to update driver details',{
                 pauseOnHover: false,
