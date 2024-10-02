@@ -994,5 +994,59 @@ body {
 }
 
 
+/*edit update modal animation*/
+
+.modal-status {
+  text-align: center;
+}
+
+.tick-animation {
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: green;
+  margin: 0 auto;
+  position: relative;
+  animation: tick-animation 0.7s ease-out forwards;
+}
+
+.cross-animation {
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: red;
+  margin: 0 auto;
+  position: relative;
+  animation: cross-animation 0.7s ease-out forwards;
+}
+
+@keyframes tick-animation {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+@keyframes cross-animation {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
 
 
+.editDeleteOkButton{
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.editDeleteOkButton:hover { 
+  background-color: #0665cb;
+}
+.editDeleteOkButton:active{
+  transform: scale(0.90);
+}

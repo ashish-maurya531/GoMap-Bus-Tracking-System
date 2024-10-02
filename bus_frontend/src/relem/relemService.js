@@ -8,6 +8,7 @@ const app=new Realm.App(APP_ID);
 
 export const userCreation=async(email,pass)=>{
     try{
+        // console.log("------------"+email,pass)
         await app.emailPasswordAuth.registerUser({email: email, password:pass})
         console.log("relem user created successfully")
         // console.log(ADMIN_API_URL);
@@ -35,7 +36,9 @@ export const deleteRelemUser = async(userEmail,userPassword)=>{
         }
         catch(error){
             if (error.message=="The user was never logged into this app"){
-                console.log("User deleted successfully");
+            
+                console.log("Relem user deleted successfully");
+        
             }
             else{
                 console.log("something went wrong");
@@ -59,24 +62,18 @@ export const deleteRelemUser = async(userEmail,userPassword)=>{
 
 
 //update user from relem
-export const updateRelemUser= async(userEmail,userPassword)=>{
+export const updateRelemUser= async(userEmail,userOldPassword,userPassword)=>{
     try{
-        console.log(userEmail,userPassword)
-        const user = await app.logIn(Realm.Credentials.emailPassword(userEmail, userPassword));
-        console.log("Current user:", app.currentUser);
-        const currentUser = app.currentUser; // This should be your authenticated user
-        if (!currentUser) {
-            throw new Error("User not authenticated");
-        }
-        const args = [];
-        await app.emailPasswordAuth.callResetPasswordFunction(
-        { email:userEmail, password:userPassword },
-        args
-        );
+        // console.log("-------------"+userEmail,userOldPassword,userPassword)
+        await deleteRelemUser(userEmail,userOldPassword);
+        await userCreation(userEmail,userPassword);
+        
+        
+        
         console.log("User updated successfully");
     }
     catch (error) {
-        console.log("Error updating user", error);
+        console.log("Error updating user", JSON.stringify(error));
     }
 }
 
