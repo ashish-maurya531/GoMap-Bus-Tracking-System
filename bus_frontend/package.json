@@ -20,7 +20,8 @@
     "react-router-dom": "^6.26.1",
     "react-toastify": "^10.0.5",
     "realm-web": "^2.0.1",
-    "recharts": "^2.12.7"
+    "recharts": "^2.12.7",
+    "require": "^2.4.20"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

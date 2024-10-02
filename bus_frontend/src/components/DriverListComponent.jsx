@@ -377,32 +377,51 @@ const DriverList = forwardRef((props, ref) => {
     };
 
     const handleEditSave = async () => {
-        try {
-            // await axios.put(`http://localhost:5000/updateDriver/${driverToEdit.id}`, {
-            //     name: editName,
-            //     phoneNo: editPhoneNo
-            // });
-            // setDrivers(drivers.map(driver => driver.id === driverToEdit.id ? { ...driver, name: editName, phoneNo: editPhoneNo } : driver));
-            // toast.success('Driver details updated successfully',{pauseOnHover: false,
-            //     pauseOnFocusLoss: false});
-            // toast.dismiss();
-            try{
-                updateRelemUser(driverToEdit.id,driverToEdit.phoneNo);
 
+        try {
+
+            const driverstatus=await axios.get(`http://localhost:5000/getdriverStatus/${driverToEdit.id}`)
+            
+        
+            if (driverstatus.data.status==200){
+                console.log("Cannot update driver, driver is running the bus");
+                return;
             }
-            catch(error){
-                console.error('Failed to update user in Realm', error);
+            else if (driverstatus.data.status==201){
+                // await axios.put(`http://localhost:5000/updateDriver/${driverToEdit.id}`, {
+                //     name: editName,
+                //     phoneNo: editPhoneNo
+                // });
+                // setDrivers(drivers.map(driver => driver.id === driverToEdit.id ? { ...driver, name: editName, phoneNo: editPhoneNo } : driver));
+                // toast.success('Driver details updated successfully',{pauseOnHover: false,
+                //     pauseOnFocusLoss: false});
+                // toast.dismiss();
+                try{
+                    // updateRelemUser(driverToEdit.id,driverToEdit.phoneNo);
+                    console.log("ok updating driver")
+
+                }
+                catch(error){
+                    console.error('Failed to update user in Realm', error);
+                }
+            } 
+            
+        }catch (error) {
+                toast.error('Failed to update driver details',{
+                    pauseOnHover: false,
+            pauseOnFocusLoss: false
+                });
+                toast.dismiss();
+                console.error(error);
             }
-        } catch (error) {
-            toast.error('Failed to update driver details',{
-                pauseOnHover: false,
-        pauseOnFocusLoss: false
-            });
-            toast.dismiss();
-            console.error(error);
-        }
-        closeEditModal();
+            closeEditModal();
     };
+
+
+
+
+
+    
 
     const openDeleteModal = (driver) => {
         setDriverToDelete(driver);

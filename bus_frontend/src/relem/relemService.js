@@ -1,6 +1,6 @@
 import * as Realm from "realm-web"
-required('dotenv').config();
-const APP_ID=process.env.APP_ID;
+// require('dotenv').config();
+const APP_ID=import.meta.env.VITE_APP_ID;
 const app=new Realm.App(APP_ID);
 
 
@@ -10,7 +10,8 @@ export const userCreation=async(email,pass)=>{
     try{
         await app.emailPasswordAuth.registerUser({email: email, password:pass})
         console.log("relem user created successfully")
-        
+        // console.log(ADMIN_API_URL);
+        // console.log(API_KEY);
 
     }
     catch(error){
