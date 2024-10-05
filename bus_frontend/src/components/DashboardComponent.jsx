@@ -20,14 +20,14 @@ return (
             </div>
             <div className='card'>
                 <div className='card-inner'>
-                    <h3>Route</h3>
+                    <h3>Driver</h3>
                     <span className="material-symbols-outlined">dashboard</span>
                 </div>
                 <h1>12</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
-                    <h3>Driver</h3>
+                    <h3>Notice</h3>
                     <span className="material-symbols-outlined">dashboard</span>
                 </div>
                 <h1>33</h1>
