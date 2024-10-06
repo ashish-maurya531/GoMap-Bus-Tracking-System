@@ -266,3 +266,17 @@ app.get('/getdriverStatus/:id',async(req,res)=>{
 })
 
 
+// get running buses data
+app.get("/runningBuses",async(req, res)=>{
+    try{
+        const result = await client.db("location").collection("driverloc").find().toArray();
+        // console.log("result: " + JSON.stringify(result));
+        res.json({
+            status: 200,
+            data: result
+        })
+    }
+    catch(err){
+        console.log(err);
+    }
+})
