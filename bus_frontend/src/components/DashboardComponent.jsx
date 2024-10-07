@@ -215,7 +215,7 @@
 
 //     useEffect(() => {
 //         getdata();
-//         const interval = setInterval(() => getdata(), 10000); // Fetch every 10 seconds
+//         const interval = setInterval(() => getdata(), 100000); // Fetch every 10 seconds
 //         return () => clearInterval(interval); // Clean up interval on component unmount
 //     }, []);
 
@@ -238,7 +238,7 @@
 //         map.addControl(nav, 'top-right');
 
 //         map.on('style.load', () => {
-//             const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText('SRMS COLLEGE');
+//             const popup = new Popup({ offset: 23,closeButton: false, closeOnClick: false }).setText('SRMS COLLEGE');
 //             markerRef.current = new Marker().setLngLat([79.43612420499357, 28.475825009410213]).setPopup(popup).addTo(map).togglePopup();
 
 //             driverLoc.forEach((bus) => {
@@ -347,6 +347,248 @@
 
 
 
+// import '../App.css';
+// import React, { useState, useRef, useEffect } from 'react';
+// import axios from 'axios';
+// import { Map as MapLibreMap, NavigationControl, Marker, Popup } from 'maplibre-gl';
+// import 'maplibre-gl/dist/maplibre-gl.css';
+// const apikey=import.meta.env.VITE_ola_ID;
+// function DashboardComponent() {
+//     const [mapReady, setMapReady] = useState(false);
+//     const [driverLoc, setDriverLoc] = useState([]);
+//     const [busesCount, setBusesCount] = useState(0);
+//     const [driversCount, setDriversCount] = useState(0);
+//     const [showDriverModal, setShowDriverModal] = useState(false);
+//     const [showNoticeModal, setShowNoticeModal] = useState(false);
+//     const [showAlertModal, setShowAlertModal] = useState(false);
+//     const [markers, setMarkers] = useState([]);
+//     const [lastUpdated, setLastUpdated] = useState("");
+//     const mapRef = useRef(null); // Reference to the map instance
+
+//     const getdata = async () => {
+//         try {
+//             const response = await axios.get('http://localhost:5000/runningBuses');
+//             const data = response.data.data;
+//             setDriverLoc(data);
+//             setBusesCount(data.length);
+//             setDriversCount(new Set(data.map(bus => bus.driver_id)).size);
+//             setLastUpdated(new Date().toLocaleTimeString()); // Update timestamp
+//         } catch (err) {
+//             console.log(err);
+//         }
+//     };
+
+//     useEffect(() => {
+//         getdata();
+//         const interval = setInterval(() => getdata(), 100000);
+//         return () => clearInterval(interval);
+//     }, []);
+
+//     useEffect(() => {
+//         if (!mapReady) return;
+
+//         const map = new MapLibreMap({
+//             container: 'central-map',
+//             center: [79.43612420499357, 28.475825009410213],
+//             zoom: 14,
+//             style: 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json',
+//             transformRequest: (url, resourceType) => {
+//                 url = url.replace('app.olamaps.io', 'api.olamaps.io');
+//                 url += url.includes('?') ? `&api_key=${apikey}` : `?api_key=${apikey}`;
+//                 return { url, resourceType };
+//             }
+//         });
+//             function drawLine(map, startCoords, endCoords) {
+//                 const line = [
+//                     [startCoords[0], startCoords[1]],
+//                     [endCoords[0], endCoords[1]],
+//                 ];
+    
+//                 map.addSource(`line-${endCoords[0]}-${endCoords[1]}`, {
+//                     'type': 'geojson',
+//                     'data': {
+//                         'type': 'Feature',
+//                         'geometry': {
+//                             'type': 'LineString',
+//                             'coordinates': line,
+//                         },
+//                     },
+//                 });
+    
+//                 map.addLayer({
+//                     'id': `line-${endCoords[0]}-${endCoords[1]}`,
+//                     'type': 'line',
+//                     'source': `line-${endCoords[0]}-${endCoords[1]}`,
+//                     'layout': {
+//                         'line-join': 'round',
+//                         'line-cap': 'round',
+//                     },
+//                     'paint': {
+//                         'line-color': '#888',
+//                         'line-width': 2,
+//                     },
+//                 });
+//             }
+    
+//         const nav = new NavigationControl({ visualizePitch: false, showCompass: true });
+//         map.addControl(nav, 'top-right');
+//         mapRef.current = map;
+
+//         map.on('style.load', () => {
+//             const popup1 = new Popup({ offset: 23, color:"#555",closeButton: false, closeOnClick: false }).setText('SRMS COLLEGE');
+//             const collegeMarker = new Marker().setLngLat([79.43612420499357, 28.475825009410213]).setPopup(popup1).addTo(map).togglePopup();
+            
+//             // Function to update markers
+//             const updateMarkers = () => {
+//                 markers.forEach(marker => marker.remove()); // Remove old markers
+
+//                 const newMarkers = driverLoc.map((bus) => {
+//                     const popup2 = new Popup({ offset: 23 }).setText(`${bus.busno}`);
+//                     const marker = new Marker().setLngLat([parseFloat(bus.lon), parseFloat(bus.lat)]).setPopup(popup2).addTo(map);
+//                     // marker.togglePopup();
+                  
+                    
+//                 });
+
+//                 setMarkers(newMarkers);
+//             };
+
+//             updateMarkers(); // Initial marker setup
+
+//             const observer = new MutationObserver(updateMarkers);
+//             observer.observe(document.getElementById('central-map'), { childList: true });
+//         });
+//     }, [mapReady, driverLoc]);
+
+//     // Prevent map from resetting when markers update
+
+
+//     useEffect(() => {
+//         if (!mapRef.current) return;
+
+//         const map = mapRef.current;
+//         const center = map.getCenter(); // Get current center
+//         const zoom = map.getZoom(); // Get current zoom level
+
+//         markers.forEach(marker => marker.remove()); // Clear existing markers
+//         const newMarkers = driverLoc.map((bus) => {
+//             const popup3 = new Popup({ offset: 23 ,closeButton: false, closeOnClick: false}).setText(`${bus.busno}`);
+//             const marker = new Marker().setLngLat([parseFloat(bus.lon), parseFloat(bus.lat)]).setPopup(popup3).addTo(map);
+//             marker.togglePopup();
+//             // drawLine(map, [79.43612420499357, 28.475825009410213], bus.coords);
+//             return marker;
+//         });
+
+//         setMarkers(newMarkers);
+
+//         // Restore the user's view (center and zoom) after marker update
+//         map.setCenter(center);
+//         map.setZoom(zoom);
+//     }, [driverLoc]);
+
+//     const toggleModal = (modalType) => {
+//         if (modalType === 'driver') setShowDriverModal(!showDriverModal);
+//         if (modalType === 'notice') setShowNoticeModal(!showNoticeModal);
+//         if (modalType === 'alert') setShowAlertModal(!showAlertModal);
+//     };
+
+//     return (
+//         <main className='main-container'>
+//             <div className='main-title'>
+//                 <h3>DASHBOARD</h3>
+//             </div>
+
+//             <div className='main-cards'>
+//                 <div className='card'>
+//                     <div className='card-inner'>
+//                         <h3>Bus</h3>
+//                         <span className="material-symbols-outlined">dashboard</span>
+//                     </div>
+//                     <h1>{busesCount}/50</h1>
+//                 </div>
+//                 <div className='card' onClick={() => toggleModal('driver')}>
+//                     <div className='card-inner'>
+//                         <h3>Driver</h3>
+//                         <span className="material-symbols-outlined">dashboard</span>
+//                     </div>
+//                     <h1>{driversCount}/24</h1>
+//                 </div>
+//                 <div className='card' onClick={() => toggleModal('notice')}>
+//                     <div className='card-inner'>
+//                         <h3>Notice</h3>
+//                         <span className="material-symbols-outlined">dashboard</span>
+//                     </div>
+//                     <h1>33</h1>
+//                 </div>
+//                 <div className='card' onClick={() => toggleModal('alert')}>
+//                     <div className='card-inner'>
+//                         <h3>ALERTS</h3>
+//                         <span className="material-symbols-outlined">dashboard</span>
+//                     </div>
+//                     <h1>42</h1>
+//                 </div>
+//             </div>
+
+//             <hr />
+
+//             <div className="map-container">
+//                 <div style={{ width: "100%", height: "54vh", overflow: "hidden" }} ref={() => setMapReady(true)} id="central-map"></div>
+//                 <div>Last updated: {lastUpdated} (every 10 seconds)</div>
+//             </div>
+
+//             <hr />
+
+//             {/* Driver Modal */}
+//             {showDriverModal && (
+//                 <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('driver')}>
+//                     <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
+//                         <button className="getBusDetails-close-btn" onClick={() => toggleModal('driver')}>×</button>
+//                         <h2>Driver Details</h2>
+//                         <ul>
+//                             {driverLoc.map((bus) => (
+//                                 <li key={bus.driver_id}>Driver ID: {bus.driver_id}, Bus No: {bus.busno}, Name: ABC</li>
+//                             ))}
+//                         </ul>
+//                     </div>
+//                 </div>
+//             )}
+
+//             {/* Notice Modal */}
+//             {showNoticeModal && (
+//                 <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('notice')}>
+//                     <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
+//                         <button className="getBusDetails-close-btn" onClick={() => toggleModal('notice')}>×</button>
+//                         <h2>Notice Board</h2>
+//                         <button >Upload Notice</button>
+//                     </div>
+//                 </div>
+//             )}
+
+//             {/* Alert Modal */}
+//             {showAlertModal && (
+//                 <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('alert')}>
+//                     <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
+//                         <button className="getBusDetails-close-btn" onClick={() => toggleModal('alert')}>×</button>
+//                         <h2>Alerts</h2>
+//                         <button>Upload Alert</button>
+//                     </div>
+//                 </div>
+//             )}
+//         </main>
+//     );
+// }
+
+// export default DashboardComponent;
+
+
+
+
+
+
+
+
+
+//this is the code in which map is initlized outside the mane looping function 
 import '../App.css';
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
@@ -354,25 +596,25 @@ import { Map as MapLibreMap, NavigationControl, Marker, Popup } from 'maplibre-g
 import 'maplibre-gl/dist/maplibre-gl.css';
 const apikey=import.meta.env.VITE_ola_ID;
 function DashboardComponent() {
-    const [mapReady, setMapReady] = useState(false);
     const [driverLoc, setDriverLoc] = useState([]);
     const [busesCount, setBusesCount] = useState(0);
     const [driversCount, setDriversCount] = useState(0);
     const [showDriverModal, setShowDriverModal] = useState(false);
     const [showNoticeModal, setShowNoticeModal] = useState(false);
     const [showAlertModal, setShowAlertModal] = useState(false);
-    const [markers, setMarkers] = useState([]);
     const [lastUpdated, setLastUpdated] = useState("");
-    const mapRef = useRef(null); // Reference to the map instance
+    const mapRef = useRef(null); // Reference for the map instance
+    const markersRef = useRef([]); // To keep track of markers
 
+    // API data fetching every 10 seconds
     const getdata = async () => {
         try {
             const response = await axios.get('http://localhost:5000/runningBuses');
             const data = response.data.data;
             setDriverLoc(data);
             setBusesCount(data.length);
-            setDriversCount(new Set(data.map(bus => bus.driver_id)).size);
-            setLastUpdated(new Date().toLocaleTimeString()); // Update timestamp
+            setDriversCount(new Set(data.map(bus => bus.driver_id)).size); // Count unique drivers
+            setLastUpdated(new Date().toLocaleTimeString());
         } catch (err) {
             console.log(err);
         }
@@ -380,12 +622,13 @@ function DashboardComponent() {
 
     useEffect(() => {
         getdata();
-        const interval = setInterval(() => getdata(), 10000);
-        return () => clearInterval(interval);
+        const interval = setInterval(() => getdata(), 10000); // Fetch every 10 seconds
+        return () => clearInterval(interval); // Clean up interval on component unmount
     }, []);
 
+    // Initialize map only once
     useEffect(() => {
-        if (!mapReady) return;
+        if (mapRef.current) return; // Prevent re-initialization
 
         const map = new MapLibreMap({
             container: 'central-map',
@@ -399,54 +642,32 @@ function DashboardComponent() {
             }
         });
 
-        const nav = new NavigationControl({ visualizePitch: false, showCompass: true });
-        map.addControl(nav, 'top-right');
-        mapRef.current = map;
+        map.addControl(new NavigationControl({ visualizePitch: false, showCompass: true }), 'top-right');
 
-        map.on('style.load', () => {
-            const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText('SRMS COLLEGE');
-            const collegeMarker = new Marker().setLngLat([79.43612420499357, 28.475825009410213]).setPopup(popup).addTo(map).togglePopup();
+        const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText('SRMS COLLEGE');
+        new Marker().setLngLat([79.43612420499357, 28.475825009410213]).setPopup(popup).addTo(map).togglePopup();
 
-            // Function to update markers
-            const updateMarkers = () => {
-                markers.forEach(marker => marker.remove()); // Remove old markers
+        mapRef.current = map; // Store the map instance in ref
+    }, []);
 
-                const newMarkers = driverLoc.map((bus) => {
-                    const popup = new Popup({ offset: 23 }).setText(`Bus: ${bus.busno}, Driver: ${bus.driver_id}`);
-                    const marker = new Marker().setLngLat([parseFloat(bus.lon), parseFloat(bus.lat)]).setPopup(popup).addTo(map);
-                    return marker;
-                });
-
-                setMarkers(newMarkers);
-            };
-
-            updateMarkers(); // Initial marker setup
-
-            const observer = new MutationObserver(updateMarkers);
-            observer.observe(document.getElementById('central-map'), { childList: true });
-        });
-    }, [mapReady, driverLoc]);
-
-    // Prevent map from resetting when markers update
+    // Update markers without resetting map
     useEffect(() => {
-        if (!mapRef.current) return;
+        if (!mapRef.current) return; // Ensure map is initialized
 
         const map = mapRef.current;
-        const center = map.getCenter(); // Get current center
-        const zoom = map.getZoom(); // Get current zoom level
 
-        markers.forEach(marker => marker.remove()); // Clear existing markers
-        const newMarkers = driverLoc.map((bus) => {
-            const popup = new Popup({ offset: 23 }).setText(`Bus: ${bus.busno}, Driver: ${bus.driver_id}`);
-            const marker = new Marker().setLngLat([parseFloat(bus.lon), parseFloat(bus.lat)]).setPopup(popup).addTo(map);
-            return marker;
+        // Clear existing markers
+        markersRef.current.forEach(marker => marker.remove());
+        markersRef.current = [];
+
+        // Add new markers
+        driverLoc.forEach((bus) => {
+            const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText(`${bus.busno}`);
+            const marker = new Marker().setLngLat([parseFloat(bus.lon), parseFloat(bus.lat)]).setPopup(popup).addTo(map).togglePopup();
+           
+            markersRef.current.push(marker); 
+            // Keep track of new markers
         });
-
-        setMarkers(newMarkers);
-
-        // Restore the user's view (center and zoom) after marker update
-        map.setCenter(center);
-        map.setZoom(zoom);
     }, [driverLoc]);
 
     const toggleModal = (modalType) => {
@@ -495,18 +716,19 @@ function DashboardComponent() {
             <hr />
 
             <div className="map-container">
-                <div style={{ width: "100%", height: "54vh", overflow: "hidden" }} ref={() => setMapReady(true)} id="central-map"></div>
-                <div>Last updated: {lastUpdated} (every 10 seconds)</div>
+                <div style={{ width: "100%", height: "54vh", overflow: "hidden" }} id="central-map"></div>
             </div>
 
             <hr />
+            <div>Last updated: {lastUpdated}</div>
 
-            {/* Driver Modal */}
+            {/* Modals */}
+                    {/* Driver Modal */}
             {showDriverModal && (
                 <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('driver')}>
                     <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
                         <button className="getBusDetails-close-btn" onClick={() => toggleModal('driver')}>×</button>
-                        <h2>Driver Details</h2>
+                        <h2>Running Buses Details</h2>
                         <ul>
                             {driverLoc.map((bus) => (
                                 <li key={bus.driver_id}>Driver ID: {bus.driver_id}, Bus No: {bus.busno}, Name: ABC</li>
@@ -517,12 +739,12 @@ function DashboardComponent() {
             )}
 
             {/* Notice Modal */}
-            {showNoticeModal && (
+             {showNoticeModal && (
                 <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('notice')}>
                     <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
                         <button className="getBusDetails-close-btn" onClick={() => toggleModal('notice')}>×</button>
                         <h2>Notice Board</h2>
-                        <button>Upload Notice</button>
+                        <button >Upload Notice</button>
                     </div>
                 </div>
             )}
@@ -537,6 +759,7 @@ function DashboardComponent() {
                     </div>
                 </div>
             )}
+
         </main>
     );
 }

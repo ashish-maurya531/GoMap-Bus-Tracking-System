@@ -1279,8 +1279,13 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+
+
+/*map pop up */
 .maplibregl-popup-content{
   color:black;
+  background-color: #007BFF;
 }
 
 
@@ -1321,7 +1326,7 @@ body {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #333;
+  color: red;
 }
 
 .getBusDetails-modal-content h2 {
