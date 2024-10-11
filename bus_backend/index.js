@@ -1,12 +1,14 @@
 const express =require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const multer = require('multer');
+const fs = require('fs-extra');
+const path = require('path');
+const cors = require('cors'); // To allow cross-origin requests
 require('dotenv').config();
 
 
 const db = require('./db');
-const cors = require('cors');
-
 
 
 const app = express();
@@ -18,6 +20,59 @@ app.use(bodyParser.json());
 app.listen(port,()=>{
     console.log(`Server is running on port :${port}`);
 })
+////////////////////////////////////////////////////////////////
+//code for pdf file upload
+// Set storage for uploaded files
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const dir = './notices';
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+      }
+      cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+      const uniqueId = Date.now(); // Unique ID for each file
+      cb(null, `${uniqueId}-${file.originalname}`);
+    },
+  });
+  
+  // File size limit set to 10MB
+  const upload = multer({ 
+    storage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+  });
+  
+  // Route to upload PDF
+  app.post('/uploadNotice', upload.single('pdf'), (req, res) => {
+    res.send({ file: req.file, message: 'File uploaded successfully' });
+  });
+  
+  // Route to get all notices
+  app.get('/notices', (req, res) => {
+    const dir = './notices';
+    const files = fs.readdirSync(dir).map(file => {
+      return {
+        file,
+        addedDate: fs.statSync(path.join(dir, file)).mtime,
+      };
+    });
+    res.send(files);
+  });
+  
+  // Serve PDF files
+  app.get("/notices/:pdfId", (req, res) => {
+    const pdfId = req.params.pdfId;
+    const pdfPath = path.join(__dirname, "notices", pdfId);
+    res.sendFile(pdfPath);
+  });
+// Serve static PDF files from the 'notices' directory
+// app.use('/notices', express.static('notices'));
+// app.use(express.static('public'));
+
+////////////////////////////////////////////////////////////////
+
+
 
 
 

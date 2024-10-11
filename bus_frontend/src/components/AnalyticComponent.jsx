@@ -52,7 +52,7 @@ function AnalyticComponent () {
     return (
         <>
         <h1>
-            Analytics is here
+            Analytics Coming Soon!
         </h1>
         <div className='charts'>
             <ResponsiveContainer width="100%" height="100%">

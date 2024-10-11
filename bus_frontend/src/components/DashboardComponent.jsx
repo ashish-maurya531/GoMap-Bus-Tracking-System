@@ -900,332 +900,543 @@
 
 
 //this is the code in which map is initlized outside the mane looping function 
-import '../App.css';
+// import '../App.css';
+// import React, { useState, useRef, useEffect } from 'react';
+// import axios from 'axios';
+// import { Map as MapLibreMap, NavigationControl, Marker, Popup } from 'maplibre-gl';
+// import 'maplibre-gl/dist/maplibre-gl.css';
+// const apikey=import.meta.env.VITE_ola_ID;
+// function DashboardComponent() {
+//     const [driverLoc, setDriverLoc] = useState([]);
+//     const [busesCount, setBusesCount] = useState(0);
+//     const [driversCount, setDriversCount] = useState(0);
+//     const [showDriverModal, setShowDriverModal] = useState(false);
+//     const [showNoticeModal, setShowNoticeModal] = useState(false);
+//     const [showAlertModal, setShowAlertModal] = useState(false);
+//     const [lastUpdated, setLastUpdated] = useState("");
+//     const mapRef = useRef(null); // Reference for the map instance
+//     const markersRef = useRef([]); // To keep track of markers
+   
+
+//     const handleFileUpload = (e) => {
+//         setSelectedFile(e.target.files[0]);
+//       };
+
+
+//       const uploadNotice = async () => {
+//         if (!selectedFile) return alert("Please select a file.");
+      
+//         const formData = new FormData();
+//         formData.append('notice', selectedFile);
+      
+//         try {
+//           await axios.post('http://localhost:5000/upload-notice', formData);
+//           alert("Notice uploaded successfully!");
+//           fetchNotices(); // Fetch the latest notices
+//         } catch (error) {
+//           alert("Failed to upload notice.");
+//         }
+//       };
+
+
+//       const fetchNotices = async () => {
+//         const response = await axios.get('http://localhost:5000/notices');
+//         setNotices(response.data.notices);
+//       };
+      
+//       useEffect(() => {
+//         fetchNotices();
+//       }, []);
+      
+//       const openPdfModal = (e, pdfFile) => {
+//         e.preventDefault();
+//         setSelectedPdf(`/notices/${pdfFile}`);
+//         setShowPdfModal(true);
+//       };
+      
+//       const closePdfModal = () => {
+//         setShowPdfModal(false);
+//       };
+
+//     // API data fetching every 10 seconds
+//     const getdata = async () => {
+//         try {
+//             const response = await axios.get('http://localhost:5000/runningBuses');
+//             const data = response.data.data;
+//             setDriverLoc(data);
+//             setBusesCount(data.length);
+//             setDriversCount(new Set(data.map(bus => bus.driver_id)).size); // Count unique drivers
+//             setLastUpdated(new Date().toLocaleTimeString());
+//         } catch (err) {
+//             console.log(err);
+//         }
+//     };
+
+
+
+
+//     ///////////////////////////
+//     function drawLine(map, startCoords, endCoords) {
+//                         const line = [
+//                             [startCoords[0], startCoords[1]],
+//                             [endCoords[0], endCoords[1]],
+//                         ];
+            
+//                         map.addSource(`line-${endCoords[0]}-${endCoords[1]}`, {
+//                             'type': 'geojson',
+//                             'data': {
+//                                 'type': 'Feature',
+//                                 'geometry': {
+//                                     'type': 'LineString',
+//                                     'coordinates': line,
+//                                 },
+//                             },
+//                         });
+            
+//                         map.addLayer({
+//                             'id': `line-${endCoords[0]}-${endCoords[1]}`,
+//                             'type': 'line',
+//                             'source': `line-${endCoords[0]}-${endCoords[1]}`,
+//                             'layout': {
+//                                 'line-join': 'round',
+//                                 'line-cap': 'round',
+//                             },
+//                             'paint': {
+//                                 'line-color': '#888',
+//                                 'line-width': 2,
+//                             },
+//                         });
+//                     }
+//     ////////////////////////
+
+//     useEffect(() => {
+//         getdata();
+//         const interval = setInterval(() => getdata(), 10000); 
+//         return () => clearInterval(interval); 
+//     }, []);
+
+//     // Initialize map only once
+//     useEffect(() => {
+//         if (mapRef.current) return; // Prevent re-initialization
+
+//         const map = new MapLibreMap({
+//             container: 'central-map',
+//             center: [79.43612420499357, 28.475825009410213],
+//             zoom: 14,
+//             style: 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json',
+//             transformRequest: (url, resourceType) => {
+//                 url = url.replace('app.olamaps.io', 'api.olamaps.io');
+//                 url += url.includes('?') ? `&api_key=${apikey}` : `?api_key=${apikey}`;
+//                 return { url, resourceType };
+//             }
+//             // style:
+//             // `https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json&api_key=${apikey}`,
+//         });
+
+//         map.addControl(new NavigationControl({ visualizePitch: false, showCompass: true }), 'top-right');
+
+//         const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText('SRMS COLLEGE');
+//         new Marker().setLngLat([79.43612420499357, 28.475825009410213]).setPopup(popup).addTo(map).togglePopup();
+
+//         mapRef.current = map; // Store the map instance in ref
+//     }, []);
+
+//     // Update markers without resetting map
+//     // useEffect(() => {
+//     //     if (!mapRef.current) return; // Ensure map is initialized
+
+//     //     const map = mapRef.current;
+
+//     //     // Clear existing markers
+//     //     markersRef.current.forEach(marker => marker.remove());
+//     //     markersRef.current = [];
+
+//     //     // Add new markers
+//     //     driverLoc.forEach((bus) => {
+//     //         const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText(`${bus.busno}`);
+//     //         const marker = new Marker().setLngLat([parseFloat(bus.lon), parseFloat(bus.lat)]).setPopup(popup).addTo(map).togglePopup();
+//     //         markersRef.current.push(marker); 
+//     //         // Keep track of new markers
+            
+//     //     });
+//     // }, [driverLoc]);
+
+//     useEffect(() => {
+//         if (!mapRef.current) return; 
+    
+//         const map = mapRef.current;
+    
+    
+//         markersRef.current.forEach(({ marker, lineId }) => {
+//             marker.remove();
+//             if (map.getLayer(lineId)) map.removeLayer(lineId);
+//             if (map.getSource(lineId)) map.removeSource(lineId);
+//         });
+//         markersRef.current = [];
+    
+//         driverLoc.forEach((bus) => {
+//             const busCoords = [parseFloat(bus.lon), parseFloat(bus.lat)];
+//             const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText(`${bus.busno}`);
+//             const marker = new Marker().setLngLat(busCoords).setPopup(popup).addTo(map).togglePopup();
+     
+//             const lineId = `line-${bus.lon}-${bus.lat}`;
+//             markersRef.current.push({ marker, lineId });
+    
+          
+//             try{
+
+//                 drawLine(map, [79.43612420499357, 28.475825009410213], busCoords);
+//             }
+//             catch(error){
+//                 console.log("Error drawing line: ", error);
+//             }
+//         });
+//     }, [driverLoc]);
+    
+
+//     const toggleModal = (modalType) => {
+//         if (modalType === 'driver') setShowDriverModal(!showDriverModal);
+//         if (modalType === 'notice') setShowNoticeModal(!showNoticeModal);
+//         if (modalType === 'alert') setShowAlertModal(!showAlertModal);
+//     };
+
+//     return (
+//         <main className='main-container'>
+//             <div className='main-title'>
+//                 <h3>DASHBOARD</h3>
+//             </div>
+
+//             <div className='main-cards'>
+//                 <div className='card'>
+//                     <div className='card-inner'>
+//                         <h3>Bus</h3>
+//                         <span className="material-symbols-outlined">dashboard</span>
+//                     </div>
+//                     <h1>{busesCount}/50</h1>
+//                 </div>
+//                 <div className='card' onClick={() => toggleModal('driver')}>
+//                     <div className='card-inner'>
+//                         <h3>Driver</h3>
+//                         <span className="material-symbols-outlined">dashboard</span>
+//                     </div>
+//                     <h1>{driversCount}/24</h1>
+//                 </div>
+//                 <div className='card' onClick={() => toggleModal('notice')}>
+//                     <div className='card-inner'>
+//                         <h3>Notice</h3>
+//                         <span className="material-symbols-outlined">dashboard</span>
+//                     </div>
+//                     <h1>33</h1>
+//                 </div>
+//                 <div className='card' onClick={() => toggleModal('alert')}>
+//                     <div className='card-inner'>
+//                         <h3>ALERTS</h3>
+//                         <span className="material-symbols-outlined">dashboard</span>
+//                     </div>
+//                     <h1>42</h1>
+//                 </div>
+//             </div>
+
+//             <hr />
+
+//             <div className="map-container">
+//                 <div style={{ width: "100%", height: "54vh", overflow: "hidden" }} id="central-map"></div>
+//             </div>
+
+//             <hr />
+//             <div>Last updated: {lastUpdated}</div>
+
+//             {/* Modals */}
+//             {/* Driver Modal */}
+//             {showDriverModal && (
+//             <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('driver')}>
+//                 <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
+//                 <button className="getBusDetails-close-btn" onClick={() => toggleModal('driver')}>x</button>
+//                 <h2>Driver Details</h2>
+//                 <ul>
+//                     {driverLoc.map((bus) => (
+//                     <li key={bus.driver_id}>
+//                         <span>Name: ABC</span>
+//                         <span>Bus No: {bus.busno}</span>
+//                         <span>Driver ID: {bus.driver_id}</span>
+//                     </li>
+//                     ))}
+//                 </ul>
+//                 </div>
+//             </div>
+//             )}
+
+
+//             {/* Notice Modal */}
+//             {showNoticeModal && (
+//             <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('notice')}>
+//                 <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
+//                 <button className="getBusDetails-close-btn" onClick={() => toggleModal('notice')}>×</button>
+//                 <h2>Latest Notices</h2>
+
+//                 <div>
+//                     <input type="file" accept="application/pdf" onChange={handleFileUpload} />
+//                     <button onClick={uploadNotice}>Upload Notice</button>
+                    
+//                     {/* Display selected file name and current date/time */}
+//                     {selectedFile && (
+//                     <div className="file-details">
+//                         <p>File Selected: {selectedFile.name}</p>
+//                         <p>Date: {new Date().toLocaleDateString()}</p>
+//                         <p>Time: {new Date().toLocaleTimeString()}</p>
+//                     </div>
+//                     )}
+//                 </div>
+
+//                 <ul>
+//                     {notices.map((notice) => (
+//                     <li key={notice.file}>
+//                         <span>{new Date(notice.addedDate).toLocaleString()}</span>
+//                         <a href={`/notices/${notice.file}`} target="_blank" onClick={(e) => openPdfModal(e, notice.file)}>Open PDF</a>
+//                     </li>
+//                     ))}
+//                 </ul>
+
+//                 {/* PDF Modal */}
+//                 {showPdfModal && (
+//                     <div className="pdf-modal-overlay" onClick={closePdfModal}>
+//                     <div className="pdf-modal-content">
+//                         <button className="pdf-modal-close-btn" onClick={closePdfModal}>×</button>
+//                         <iframe src={selectedPdf} width="100%" height="100%" />
+//                     </div>
+//                     </div>
+//                 )}
+//                 </div>
+//             </div>
+//             )}
+
+//             {/* Alert Modal */}
+//             {showAlertModal && (
+//                 <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('alert')}>
+//                     <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
+//                         <button className="getBusDetails-close-btn" onClick={() => toggleModal('alert')}>×</button>
+//                         <h2>Alerts</h2>
+//                         <button>Upload Alert</button>
+//                     </div>
+//                 </div>
+//             )}  
+
+//         </main>
+//     );
+// }
+
+// export default DashboardComponent;
+
+
+
+
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Map as MapLibreMap, NavigationControl, Marker, Popup } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-const apikey=import.meta.env.VITE_ola_ID;
+import NoticeModal from './NoticeModal';  // Assuming NoticeModal is in the same directory
+const apikey = import.meta.env.VITE_ola_ID;
+
 function DashboardComponent() {
-    const [driverLoc, setDriverLoc] = useState([]);
-    const [busesCount, setBusesCount] = useState(0);
-    const [driversCount, setDriversCount] = useState(0);
-    const [showDriverModal, setShowDriverModal] = useState(false);
-    const [showNoticeModal, setShowNoticeModal] = useState(false);
-    const [showAlertModal, setShowAlertModal] = useState(false);
-    const [lastUpdated, setLastUpdated] = useState("");
-    const mapRef = useRef(null); // Reference for the map instance
-    const markersRef = useRef([]); // To keep track of markers
-    const [notices, setNotices] = useState([]);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [showPdfModal, setShowPdfModal] = useState(false);
-    const [selectedPdf, setSelectedPdf] = useState("");
+  const [driverLoc, setDriverLoc] = useState([]);
+  const [busesCount, setBusesCount] = useState(0);
+  const [driversCount, setDriversCount] = useState(0);
+  const [showDriverModal, setShowDriverModal] = useState(false);
+  const [showNoticeModal, setShowNoticeModal] = useState(false);
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState("");
+  const mapRef = useRef(null);
+  const markersRef = useRef([]);
 
-    const handleFileUpload = (e) => {
-        setSelectedFile(e.target.files[0]);
-      };
+  const getdata = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/runningBuses');
+      const data = response.data.data;
+      setDriverLoc(data);
+      setBusesCount(data.length);
+      setDriversCount(new Set(data.map(bus => bus.driver_id)).size);
+      setLastUpdated(new Date().toLocaleTimeString());
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
+  function drawLine(map, startCoords, endCoords) {
+    const line = [
+      [startCoords[0], startCoords[1]],
+      [endCoords[0], endCoords[1]],
+    ];
 
-      const uploadNotice = async () => {
-        if (!selectedFile) return alert("Please select a file.");
-      
-        const formData = new FormData();
-        formData.append('notice', selectedFile);
-      
-        try {
-          await axios.post('http://localhost:5000/upload-notice', formData);
-          alert("Notice uploaded successfully!");
-          fetchNotices(); // Fetch the latest notices
-        } catch (error) {
-          alert("Failed to upload notice.");
-        }
-      };
+    map.addSource(`line-${endCoords[0]}-${endCoords[1]}`, {
+      'type': 'geojson',
+      'data': {
+        'type': 'Feature',
+        'geometry': {
+          'type': 'LineString',
+          'coordinates': line,
+        },
+      },
+    });
 
+    map.addLayer({
+      'id': `line-${endCoords[0]}-${endCoords[1]}`,
+      'type': 'line',
+      'source': `line-${endCoords[0]}-${endCoords[1]}`,
+      'layout': {
+        'line-join': 'round',
+        'line-cap': 'round',
+      },
+      'paint': {
+        'line-color': '#888',
+        'line-width': 2,
+      },
+    });
+  }
 
-      const fetchNotices = async () => {
-        const response = await axios.get('http://localhost:5000/notices');
-        setNotices(response.data.notices);
-      };
-      
-      useEffect(() => {
-        fetchNotices();
-      }, []);
-      
-      const openPdfModal = (e, pdfFile) => {
-        e.preventDefault();
-        setSelectedPdf(`/notices/${pdfFile}`);
-        setShowPdfModal(true);
-      };
-      
-      const closePdfModal = () => {
-        setShowPdfModal(false);
-      };
+  useEffect(() => {
+    getdata();
+    const interval = setInterval(() => getdata(), 100000);
+    return () => clearInterval(interval);
+  }, []);
 
-    // API data fetching every 10 seconds
-    const getdata = async () => {
-        try {
-            const response = await axios.get('http://localhost:5000/runningBuses');
-            const data = response.data.data;
-            setDriverLoc(data);
-            setBusesCount(data.length);
-            setDriversCount(new Set(data.map(bus => bus.driver_id)).size); // Count unique drivers
-            setLastUpdated(new Date().toLocaleTimeString());
-        } catch (err) {
-            console.log(err);
-        }
-    };
+  useEffect(() => {
+    if (mapRef.current) return;
 
+    const map = new MapLibreMap({
+      container: 'central-map',
+      center: [79.43612420499357, 28.475825009410213],
+      zoom: 14,
+      style: 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json',
+      transformRequest: (url, resourceType) => {
+        url = url.replace('app.olamaps.io', 'api.olamaps.io');
+        url += url.includes('?') ? `&api_key=${apikey}` : `?api_key=${apikey}`;
+        return { url, resourceType };
+      },
+    });
 
+    map.addControl(new NavigationControl({ visualizePitch: false, showCompass: true }), 'top-right');
 
+    const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText('SRMS COLLEGE');
+    new Marker().setLngLat([79.43612420499357, 28.475825009410213]).setPopup(popup).addTo(map).togglePopup();
 
-    ///////////////////////////
-    function drawLine(map, startCoords, endCoords) {
-                        const line = [
-                            [startCoords[0], startCoords[1]],
-                            [endCoords[0], endCoords[1]],
-                        ];
-            
-                        map.addSource(`line-${endCoords[0]}-${endCoords[1]}`, {
-                            'type': 'geojson',
-                            'data': {
-                                'type': 'Feature',
-                                'geometry': {
-                                    'type': 'LineString',
-                                    'coordinates': line,
-                                },
-                            },
-                        });
-            
-                        map.addLayer({
-                            'id': `line-${endCoords[0]}-${endCoords[1]}`,
-                            'type': 'line',
-                            'source': `line-${endCoords[0]}-${endCoords[1]}`,
-                            'layout': {
-                                'line-join': 'round',
-                                'line-cap': 'round',
-                            },
-                            'paint': {
-                                'line-color': '#888',
-                                'line-width': 2,
-                            },
-                        });
-                    }
-    ////////////////////////
+    mapRef.current = map;
+  }, []);
 
-    useEffect(() => {
-        getdata();
-        const interval = setInterval(() => getdata(), 10000); 
-        return () => clearInterval(interval); 
-    }, []);
+  useEffect(() => {
+    if (!mapRef.current) return;
 
-    // Initialize map only once
-    useEffect(() => {
-        if (mapRef.current) return; // Prevent re-initialization
+    const map = mapRef.current;
 
-        const map = new MapLibreMap({
-            container: 'central-map',
-            center: [79.43612420499357, 28.475825009410213],
-            zoom: 14,
-            style: 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json',
-            transformRequest: (url, resourceType) => {
-                url = url.replace('app.olamaps.io', 'api.olamaps.io');
-                url += url.includes('?') ? `&api_key=${apikey}` : `?api_key=${apikey}`;
-                return { url, resourceType };
-            }
-            // style:
-            // `https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json&api_key=${apikey}`,
-        });
+    markersRef.current.forEach(({ marker, lineId }) => {
+      marker.remove();
+      if (map.getLayer(lineId)) map.removeLayer(lineId);
+      if (map.getSource(lineId)) map.removeSource(lineId);
+    });
+    markersRef.current = [];
 
-        map.addControl(new NavigationControl({ visualizePitch: false, showCompass: true }), 'top-right');
+    driverLoc.forEach((bus) => {
+      const busCoords = [parseFloat(bus.lon), parseFloat(bus.lat)];
+      const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText(`${bus.busno}`);
+      const marker = new Marker().setLngLat(busCoords).setPopup(popup).addTo(map).togglePopup();
 
-        const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText('SRMS COLLEGE');
-        new Marker().setLngLat([79.43612420499357, 28.475825009410213]).setPopup(popup).addTo(map).togglePopup();
+      const lineId = `line-${bus.lon}-${bus.lat}`;
+      markersRef.current.push({ marker, lineId });
 
-        mapRef.current = map; // Store the map instance in ref
-    }, []);
+      try {
+        drawLine(map, [79.43612420499357, 28.475825009410213], busCoords);
+      } catch (error) {
+        console.log("Error drawing line: ", error);
+      }
+    });
+  }, [driverLoc]);
 
-    // Update markers without resetting map
-    // useEffect(() => {
-    //     if (!mapRef.current) return; // Ensure map is initialized
+  const toggleModal = (modalType) => {
+    if (modalType === 'driver') setShowDriverModal(!showDriverModal);
+    if (modalType === 'notice') setShowNoticeModal(!showNoticeModal);
+    if (modalType === 'alert') setShowAlertModal(!showAlertModal);
+  };
 
-    //     const map = mapRef.current;
+  return (
+    <main className='main-container'>
+      <div className='main-title'>
+        <h3>DASHBOARD</h3>
+      </div>
 
-    //     // Clear existing markers
-    //     markersRef.current.forEach(marker => marker.remove());
-    //     markersRef.current = [];
+      <div className='main-cards'>
+        <div className='card'>
+          <div className='card-inner'>
+            <h3>Bus</h3>
+            <span className="material-symbols-outlined">dashboard</span>
+          </div>
+          <h1>{busesCount}/50</h1>
+        </div>
+        <div className='card' onClick={() => toggleModal('driver')}>
+          <div className='card-inner'>
+            <h3>Driver</h3>
+            <span className="material-symbols-outlined">dashboard</span>
+          </div>
+          <h1>{driversCount}/24</h1>
+        </div>
+        <div className='card' onClick={() => toggleModal('notice')}>
+          <div className='card-inner'>
+            <h3>Notice</h3>
+            <span className="material-symbols-outlined">dashboard</span>
+          </div>
+          <h1>33</h1>
+        </div>
+        <div className='card' onClick={() => toggleModal('alert')}>
+          <div className='card-inner'>
+            <h3>ALERTS</h3>
+            <span className="material-symbols-outlined">dashboard</span>
+          </div>
+          <h1>42</h1>
+        </div>
+      </div>
 
-    //     // Add new markers
-    //     driverLoc.forEach((bus) => {
-    //         const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText(`${bus.busno}`);
-    //         const marker = new Marker().setLngLat([parseFloat(bus.lon), parseFloat(bus.lat)]).setPopup(popup).addTo(map).togglePopup();
-    //         markersRef.current.push(marker); 
-    //         // Keep track of new markers
-            
-    //     });
-    // }, [driverLoc]);
+      <hr />
 
-    useEffect(() => {
-        if (!mapRef.current) return; 
-    
-        const map = mapRef.current;
-    
-    
-        markersRef.current.forEach(({ marker, lineId }) => {
-            marker.remove();
-            if (map.getLayer(lineId)) map.removeLayer(lineId);
-            if (map.getSource(lineId)) map.removeSource(lineId);
-        });
-        markersRef.current = [];
-    
-        driverLoc.forEach((bus) => {
-            const busCoords = [parseFloat(bus.lon), parseFloat(bus.lat)];
-            const popup = new Popup({ offset: 23, closeButton: false, closeOnClick: false }).setText(`${bus.busno}`);
-            const marker = new Marker().setLngLat(busCoords).setPopup(popup).addTo(map).togglePopup();
-     
-            const lineId = `line-${bus.lon}-${bus.lat}`;
-            markersRef.current.push({ marker, lineId });
-    
-          
-            try{
+      <div className="map-container">
+        <div style={{ width: "100%", height: "54vh", overflow: "hidden" }} id="central-map"></div>
+      </div>
 
-                drawLine(map, [79.43612420499357, 28.475825009410213], busCoords);
-            }
-            catch(error){
-                console.log("Error drawing line: ", error);
-            }
-        });
-    }, [driverLoc]);
-    
+      <hr />
+      <div>Last updated: {lastUpdated}</div>
 
-    const toggleModal = (modalType) => {
-        if (modalType === 'driver') setShowDriverModal(!showDriverModal);
-        if (modalType === 'notice') setShowNoticeModal(!showNoticeModal);
-        if (modalType === 'alert') setShowAlertModal(!showAlertModal);
-    };
+      {/* Modals */}
+      {/* Driver Modal */}
+      {showDriverModal && (
+        <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('driver')}>
+          <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="getBusDetails-close-btn" onClick={() => toggleModal('driver')}>x</button>
+            <h2>Driver Details</h2>
+            <ul>
+              {driverLoc.map((bus) => (
+                <li key={bus.driver_id}>
+                  <span>Name: ABC</span>
+                  <span>Bus No: {bus.busno}</span>
+                  <span>Driver ID: {bus.driver_id}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
 
-    return (
-        <main className='main-container'>
-            <div className='main-title'>
-                <h3>DASHBOARD</h3>
-            </div>
+      {/* Notice Modal */}
+      <NoticeModal showNoticeModal={showNoticeModal} toggleModal={toggleModal} />
 
-            <div className='main-cards'>
-                <div className='card'>
-                    <div className='card-inner'>
-                        <h3>Bus</h3>
-                        <span className="material-symbols-outlined">dashboard</span>
-                    </div>
-                    <h1>{busesCount}/50</h1>
-                </div>
-                <div className='card' onClick={() => toggleModal('driver')}>
-                    <div className='card-inner'>
-                        <h3>Driver</h3>
-                        <span className="material-symbols-outlined">dashboard</span>
-                    </div>
-                    <h1>{driversCount}/24</h1>
-                </div>
-                <div className='card' onClick={() => toggleModal('notice')}>
-                    <div className='card-inner'>
-                        <h3>Notice</h3>
-                        <span className="material-symbols-outlined">dashboard</span>
-                    </div>
-                    <h1>33</h1>
-                </div>
-                <div className='card' onClick={() => toggleModal('alert')}>
-                    <div className='card-inner'>
-                        <h3>ALERTS</h3>
-                        <span className="material-symbols-outlined">dashboard</span>
-                    </div>
-                    <h1>42</h1>
-                </div>
-            </div>
-
-            <hr />
-
-            <div className="map-container">
-                <div style={{ width: "100%", height: "54vh", overflow: "hidden" }} id="central-map"></div>
-            </div>
-
-            <hr />
-            <div>Last updated: {lastUpdated}</div>
-
-            {/* Modals */}
-                    {/* Driver Modal */}
-                    {showDriverModal && (
-            <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('driver')}>
-                <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
-                <button className="getBusDetails-close-btn" onClick={() => toggleModal('driver')}>x</button>
-                <h2>Driver Details</h2>
-                <ul>
-                    {driverLoc.map((bus) => (
-                    <li key={bus.driver_id}>
-                        <span>Name: ABC</span>
-                        <span>Bus No: {bus.busno}</span>
-                        <span>Driver ID: {bus.driver_id}</span>
-                    </li>
-                    ))}
-                </ul>
-                </div>
-            </div>
-            )}
-
-
-            {/* Notice Modal */}
-            {showNoticeModal && (
-            <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('notice')}>
-                <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
-                <button className="getBusDetails-close-btn" onClick={() => toggleModal('notice')}>×</button>
-                <h2>Latest Notices</h2>
-
-                <div>
-                    <input type="file" accept="application/pdf" onChange={handleFileUpload} />
-                    <button onClick={uploadNotice}>Upload Notice</button>
-                    
-                    {/* Display selected file name and current date/time */}
-                    {selectedFile && (
-                    <div className="file-details">
-                        <p>File Selected: {selectedFile.name}</p>
-                        <p>Date: {new Date().toLocaleDateString()}</p>
-                        <p>Time: {new Date().toLocaleTimeString()}</p>
-                    </div>
-                    )}
-                </div>
-
-                <ul>
-                    {notices.map((notice) => (
-                    <li key={notice.file}>
-                        <span>{new Date(notice.addedDate).toLocaleString()}</span>
-                        <a href={`/notices/${notice.file}`} target="_blank" onClick={(e) => openPdfModal(e, notice.file)}>Open PDF</a>
-                    </li>
-                    ))}
-                </ul>
-
-                {/* PDF Modal */}
-                {showPdfModal && (
-                    <div className="pdf-modal-overlay" onClick={closePdfModal}>
-                    <div className="pdf-modal-content">
-                        <button className="pdf-modal-close-btn" onClick={closePdfModal}>×</button>
-                        <iframe src={selectedPdf} width="100%" height="100%" />
-                    </div>
-                    </div>
-                )}
-                </div>
-            </div>
-            )}
-
-            {/* Alert Modal */}
-            {showAlertModal && (
-                <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('alert')}>
-                    <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
-                        <button className="getBusDetails-close-btn" onClick={() => toggleModal('alert')}>×</button>
-                        <h2>Alerts</h2>
-                        <button>Upload Alert</button>
-                    </div>
-                </div>
-            )}
-
-        </main>
-    );
+      {/* Alert Modal */}
+      {showAlertModal && (
+        <div className="getBusDetails-modal-overlay" onClick={() => toggleModal('alert')}>
+          <div className="getBusDetails-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="getBusDetails-close-btn" onClick={() => toggleModal('alert')}>×</button>
+            <h2>Alerts</h2>
+            <button>Upload Alert</button>
+          </div>
+        </div>
+      )}
+    </main>
+  );
 }
 
 export default DashboardComponent;
