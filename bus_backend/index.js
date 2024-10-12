@@ -23,33 +23,65 @@ app.listen(port,()=>{
 ////////////////////////////////////////////////////////////////
 //code for pdf file upload
 // Set storage for uploaded files
+app.use('/notices', express.static(path.join(__dirname, 'notices')));
+
+// Multer storage for PDF uploads
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      const dir = './notices';
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
-      }
-      cb(null, dir);
-    },
-    filename: (req, file, cb) => {
-      const uniqueId = Date.now(); // Unique ID for each file
-      cb(null, `${uniqueId}-${file.originalname}`);
-    },
-  });
+  destination: (req, file, cb) => {
+    const dir = './notices';
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = `${Date.now()}-${file.originalname}`;
+    cb(null, uniqueSuffix);
+  }
+});
+
+const upload = multer({ 
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // Limit to 10MB
+});
+const checkAndDeleteOldFiles = () => {
+    const dir = './notices';
+    const files = fs.readdirSync(dir);
+    
+    if (files.length > 5) {
+      // Sort by modification time (oldest first)
+      const sortedFiles = files.map(file => ({
+        name: file,
+        time: fs.statSync(path.join(dir, file)).mtime.getTime(),
+      })).sort((a, b) => a.time - b.time);
   
-  // File size limit set to 10MB
-  const upload = multer({ 
-    storage,
-    limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
-  });
-  
-  // Route to upload PDF
-  app.post('/uploadNotice', upload.single('pdf'), (req, res) => {
-    res.send({ file: req.file, message: 'File uploaded successfully' });
-  });
-  
-  // Route to get all notices
-  app.get('/notices', (req, res) => {
+      // Delete the oldest file
+      const oldestFile = sortedFiles[0].name;
+      fs.unlinkSync(path.join(dir, oldestFile));
+      console.log(`Deleted old file: ${oldestFile}`);
+    }
+  };
+// PDF upload route
+app.post('/uploadNotice', upload.single('pdf'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send({ error: 'File too large or not valid' });
+  }
+  checkAndDeleteOldFiles();
+  res.send({ message: 'File uploaded successfully', file: req.file.filename });
+});
+
+// Serve a specific PDF by ID
+app.get('/api/notices/:pdfId', (req, res) => {
+  const pdfId = req.params.pdfId;
+  const filePath = path.join(__dirname, 'notices', pdfId);
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send('File not found');
+  }
+});
+
+app.get('/notices', (req, res) => {
     const dir = './notices';
     const files = fs.readdirSync(dir).map(file => {
       return {
@@ -59,16 +91,6 @@ const storage = multer.diskStorage({
     });
     res.send(files);
   });
-  
-  // Serve PDF files
-  app.get("/notices/:pdfId", (req, res) => {
-    const pdfId = req.params.pdfId;
-    const pdfPath = path.join(__dirname, "notices", pdfId);
-    res.sendFile(pdfPath);
-  });
-// Serve static PDF files from the 'notices' directory
-// app.use('/notices', express.static('notices'));
-// app.use(express.static('public'));
 
 ////////////////////////////////////////////////////////////////
 

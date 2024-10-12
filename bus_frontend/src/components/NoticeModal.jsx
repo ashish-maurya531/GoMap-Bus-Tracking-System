@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import { Document, Page} from '@react-pdf/renderer';
-// import {pdfjs} from '@react-pdf/renderer';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-import ReactPDF from '@react-pdf/renderer';
 import './NoticeModal.css';
+import { Worker } from '@react-pdf-viewer/core';
+import { Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
 
-// pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 function NoticeModal({ showNoticeModal, toggleModal }) {
-  const [selectedFile, setSelectedFile] = useState(null);
   const [notices, setNotices] = useState([]);
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [pdfName, setPdfName] = useState('');
 
   const fetchNotices = async () => {
     try {
@@ -30,10 +29,9 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
   };
 
   const uploadNotice = async () => {
-    if (!selectedFile) return;
-
+    if (!selectedFile || !pdfName) return;
     if (selectedFile.size > 10 * 1024 * 1024) {
-      setError('File size is greater than 10 MB');
+      setUploadError('File size is greater than 10MB');
       return;
     }
 
@@ -41,28 +39,21 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
     formData.append('pdf', selectedFile);
 
     try {
-      setLoading(true);
       await axios.post('http://localhost:5000/uploadNotice', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      fetchNotices();
-      setSelectedFile(null);
+      setPdfName(''); // Clear the name field after upload
+      fetchNotices(); // Refresh the list
     } catch (error) {
       console.error('Error uploading notice:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  const openPdfModal = async (pdfId) => {
+  const openPdfModal = (pdfId) => {
     setLoading(true);
-    setSelectedPdf(`/api/notices/${pdfId}`);
+    setSelectedPdf(`http://localhost:5000/api/notices/${pdfId}`);
     setShowPdfModal(true);
     setLoading(false);
-  };
-
-  const closePdfModal = () => {
-    setShowPdfModal(false);
   };
 
   useEffect(() => {
@@ -71,96 +62,64 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
     }
   }, [showNoticeModal]);
 
-
-  const styles = StyleSheet.create({
-    page: {
-      flexDirection: 'row',
-      backgroundColor: '#E4E4E4'
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexGrow: 1
-    }
-  });
-  
-  // Create Document Component
-  const MyDocument = () => (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <Text>Section #1</Text>
-        </View>
-        <View style={styles.section}>
-          <Text>Section #2</Text>
-        </View>
-      </Page>
-    </Document>
-  );
-
-
-
   return (
     <>
       {showNoticeModal && (
         <div className="modal-overlay" onClick={() => toggleModal('notice')}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => toggleModal('notice')}>
-              ×
-            </button>
-            <h2 className="modal-title">Latest Notices</h2>
+            <button className="close-btn" onClick={() => toggleModal('notice')}>×</button>
+            <h2>Latest Notices</h2>
 
-            {error && (
-              <div className="error-modal">
-                <p>{error}</p>
-                <button onClick={() => setError('')}>OK</button>
-              </div>
-            )}
-
-            <ul className="notices-list">
-              {notices.length > 0 ? (
+            {/* Notices List */}
+            <ul>
+              {notices.length === 0 ? (
+                <li>No PDF uploaded so far.</li>
+              ) : (
                 notices.map((notice) => (
-                  <li key={notice.file} className="notice-item">
-                    <span>{new Date(notice.addedDate).toLocaleString()}</span>
-                    <button
-                      className="pdf-link"
-                      onClick={() => openPdfModal(notice.file)}
-                    >
-                      {notice.file}
+                  <li key={notice.file}>
+                    <button onClick={() => openPdfModal(notice.file)}>
+                      {notice.file} - {new Date(notice.addedDate).toLocaleString()}
                     </button>
                   </li>
                 ))
-              ) : (
-                <li>No PDF uploaded so far</li>
               )}
             </ul>
 
+            {/* Upload Section */}
             <div className="upload-section">
-              <label className="upload-label" htmlFor="file-upload">
-                {selectedFile ? selectedFile.name : 'Choose File'}
-              </label>
+              {uploadError && (
+                <div className="error-modal">
+                  <p>{uploadError}</p>
+                  <button onClick={() => setUploadError(null)}>OK</button>
+                </div>
+              )}
+              <input type="file" accept="application/pdf" onChange={handleFileChange} />
               <input
-                type="file"
-                id="file-upload"
-                accept="application/pdf"
-                onChange={handleFileChange}
-                className={`file-input ${selectedFile ? 'file-selected' : ''}`}
-                onClick={(e) => {
-                  e.currentTarget.value = null; // Reset file input
-                }}
+                type="text"
+                value={pdfName}
+                onChange={(e) => setPdfName(e.target.value)}
+                placeholder="Enter PDF name"
               />
-              <button className="upload-btn" onClick={uploadNotice}>
-                Upload
+              <button onClick={uploadNotice} disabled={!selectedFile || !pdfName}>
+                Upload Notice
               </button>
             </div>
 
+            {/* PDF Modal */}
             {showPdfModal && (
-              <div className="pdf-modal-overlay" onClick={closePdfModal}>
+              <div className="pdf-modal-overlay" onClick={() => setShowPdfModal(false)}>
                 <div className="pdf-modal-content" onClick={(e) => e.stopPropagation()}>
-                  <button className="pdf-modal-close-btn" onClick={closePdfModal}>×</button>
-                
-                  {ReactPDF.render(<MyDocument />, `${selectedPdf}`)}
-                
+                  <button className="pdf-modal-close-btn" onClick={() => setShowPdfModal(false)}>×</button>
+                  {loading ? (
+                    <p>Loading PDF...</p>
+                  ) : (
+
+                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+
+                    
+                    <Viewer fileUrl={selectedPdf} />
+                </Worker>
+                  )}
                 </div>
               </div>
             )}
