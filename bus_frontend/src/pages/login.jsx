@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext'; // Import useAuth hook
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+const Src = import.meta.env.VITE_Src;
 const Login = () => {
     const navigate = useNavigate();
     const { login } = useAuth(); // Get the login function from AuthContext
@@ -44,7 +44,7 @@ const Login = () => {
     }
 
         try {
-            const response = await axios.post('http://localhost:5000/login', { adminId, password });
+            const response = await axios.post(`${Src}/login`, { adminId, password });
             console.log("api hit");
             console.log(response.data)
             if (response.data.message===`Login successful! Welcome ${adminId}` && response.data.status==200 ){
@@ -57,7 +57,7 @@ const Login = () => {
 
                 
                 
-                setTimeout( ()=>{navigate("/dashboard")}, 2000);
+                setTimeout( ()=>{navigate(`/dashboard`)}, 2000);
             }
             else{
                 // setError(response?.data?.message)

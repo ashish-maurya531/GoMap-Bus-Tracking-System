@@ -321,6 +321,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import DriverList from './DriverListComponent';
 import { userCreation } from '../relem/relemService.js';
 
+const Src = import.meta.env.VITE_Src;
 
 function DriverComponent() {
     const [dName, setdName] = useState('');
@@ -351,7 +352,7 @@ function DriverComponent() {
 
     const driverCount = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/idCount');
+            const response = await axios.get(`${Src}/idCount`);
             return response?.data?.data;
         } catch (error) {
             console.error(error);
@@ -376,7 +377,7 @@ function DriverComponent() {
 
         const driverCountData = await driverCount();
         try {
-            await axios.post('http://localhost:5000/addDriver', {
+            await axios.post(`${Src}/addDriver`, {
                 driverId: driverCountData + 1,
                 dName,
                 dPhoneNo,

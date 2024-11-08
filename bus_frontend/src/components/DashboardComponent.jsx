@@ -4,6 +4,9 @@ import { Map as MapLibreMap, NavigationControl, Marker, Popup } from 'maplibre-g
 import 'maplibre-gl/dist/maplibre-gl.css';
 import NoticeModal from './NoticeModal';  // Assuming NoticeModal is in the same directory
 const apikey = import.meta.env.VITE_ola_ID;
+const Src = import.meta.env.VITE_Src;
+
+
 
 function DashboardComponent() {
   const [driverLoc, setDriverLoc] = useState([]);
@@ -18,7 +21,7 @@ function DashboardComponent() {
 
   const getdata = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/runningBuses');
+      const response = await axios.get(`${Src}/runningBuses`);
       const data = response.data.data;
       setDriverLoc(data);
       setBusesCount(data.length);

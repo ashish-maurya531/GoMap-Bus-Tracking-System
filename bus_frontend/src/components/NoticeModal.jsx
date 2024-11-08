@@ -4,6 +4,7 @@ import './NoticeModal.css';
 import { Worker } from '@react-pdf-viewer/core';
 import { Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
+const Src = import.meta.env.VITE_Src;
 
 
 function NoticeModal({ showNoticeModal, toggleModal }) {
@@ -17,7 +18,7 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
 
   const fetchNotices = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/notices');
+      const response = await axios.get(`${Src}/notices`);
       setNotices(response.data);
     } catch (error) {
       console.error('Error fetching notices:', error);
@@ -39,7 +40,7 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
     formData.append('pdf', selectedFile);
 
     try {
-      await axios.post('http://localhost:5000/uploadNotice', formData, {
+      await axios.post(`${Src}/uploadNotice`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setPdfName(''); // Clear the name field after upload
@@ -51,7 +52,7 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
 
   const openPdfModal = (pdfId) => {
     setLoading(true);
-    setSelectedPdf(`http://localhost:5000/api/notices/${pdfId}`);
+    setSelectedPdf(`${Src}/api/notices/${pdfId}`);
     setShowPdfModal(true);
     setLoading(false);
   };

@@ -667,6 +667,8 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { deleteRelemUser, updateRelemUser } from '../relem/relemService.js';
+const Src = import.meta.env.VITE_Src;
+
 
 const DriverList = forwardRef((props, ref) => {
     const [drivers, setDrivers] = useState([]);
@@ -683,7 +685,7 @@ const DriverList = forwardRef((props, ref) => {
 
     const getDriverList = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/getdriver');
+            const response = await axios.get(`${Src}/getdriver`);
             setDrivers(response.data.data.reverse());
         } catch (error) {
             console.error('Error fetching drivers:', error);
@@ -737,11 +739,11 @@ const DriverList = forwardRef((props, ref) => {
     const handleDelete = async () => {
         setLoading(true); // Start the loader
         try {
-            const driverstatus = await axios.get(`http://localhost:5000/getdriverStatus/${driverToDelete.id}`);
+            const driverstatus = await axios.get(`${Src}/getdriverStatus/${driverToDelete.id}`);
             if (driverstatus.data.status === 200) {
                 setModalStatus({ success: false, message: 'Driver is running a bus, not able to delete the driver.' });
             } else if (driverstatus.data.status === 201) {
-                await axios.delete(`http://localhost:5000/deleteDriver/${driverToDelete.id}`);
+                await axios.delete(`${Src}/deleteDriver/${driverToDelete.id}`);
                 try {
                     deleteRelemUser(driverToDelete.id, driverToDelete.phoneNo);
                 } catch (error) {
@@ -761,11 +763,11 @@ const DriverList = forwardRef((props, ref) => {
     const handleEditSave = async () => {
         setLoading(true); // Start the loader
         try {
-            const driverstatus = await axios.get(`http://localhost:5000/getdriverStatus/${driverToEdit.id}`);
+            const driverstatus = await axios.get(`${Src}/getdriverStatus/${driverToEdit.id}`);
             if (driverstatus.data.status === 200) {
                 setModalStatus({ success: false, message: 'Driver is running a bus, not able to update details.' });
             } else if (driverstatus.data.status === 201) {
-                await axios.put(`http://localhost:5000/updateDriver/${driverToEdit.id}`, {
+                await axios.put(`${Src}/updateDriver/${driverToEdit.id}`, {
                     name: editName,
                     phoneNo: editPhoneNo,
                 });

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+const Src = import.meta.env.VITE_Src;
 
 
 
@@ -16,7 +17,7 @@ function RoutesComponent () {
         setRoute1(route1);
 
         try {
-            const response = await axios.get('http://localhost:5000/route');
+            const response = await axios.get(`${Src}/route`);
             // console.log((response.data.data));
             var location = response?.data?.data;
             setRoute1(location);
@@ -39,7 +40,7 @@ function RoutesComponent () {
         try {
             const updated_routes=document.getElementById("route-textarea-update").value;
            
-            const response = await axios.post('http://localhost:5000/route', { route: updated_routes,})
+            const response = await axios.post(`${Src}/route`, { route: updated_routes,})
            
             setRoute1(updated_routes);
             toast.success('Routes Updated Successfuly', {});
