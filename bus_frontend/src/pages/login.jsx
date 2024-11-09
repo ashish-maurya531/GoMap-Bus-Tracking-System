@@ -84,7 +84,7 @@ const Login = () => {
             <h2 className="login-page-fw-bold login-page-text login-page-text-center">
                 Go Map
                 <img
-                    src="./src/assets/icons8-location.gif"
+                    src="icons8-location.gif"
                     class="login-page-location-icon"
                     alt="location icon"
                 />
