@@ -5,6 +5,7 @@ import { AuthProvider } from './components/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/dashboard';
 import Login from './pages/login';
+const Src = import.meta.env.VITE_Src;
 
 function App() {
     const [isOnline, setIsOnline] = useState(navigator.onLine); // Initial online status
@@ -60,7 +61,7 @@ function App() {
                 <Router>
                     <Routes>
                         <Route index element={<Navigate to='/login' />} />
-                        <Route path="/login" element={<Login />} />
+                        <Route path={`${Src}/login`} element={<Login />} />
                         <Route path="/dashboard" element={<ProtectedRoute element={<Home />} />} />
                     </Routes>
                 </Router>
