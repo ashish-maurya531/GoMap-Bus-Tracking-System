@@ -61,7 +61,7 @@ function App() {
                 <Router>
                     <Routes>
                         <Route index element={<Navigate to='/login' />} />
-                        <Route path={`${Src}/login`} element={<Login />} />
+                        <Route path="/login" element={<Login />} />
                         <Route path="/dashboard" element={<ProtectedRoute element={<Home />} />} />
                     </Routes>
                 </Router>
