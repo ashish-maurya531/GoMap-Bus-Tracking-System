@@ -136,6 +136,7 @@ const Login = () => {
             position="top-center"
             autoClose={2000}
             theme="dark"
+            limit={1}
          
             />
         </div>

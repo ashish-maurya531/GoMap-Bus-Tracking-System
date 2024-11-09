@@ -60,9 +60,9 @@ function App() {
                 {/* Main Router */}
                 <Router>
                     <Routes>
-                        <Route index element={<Navigate to='/login' />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/dashboard" element={<ProtectedRoute element={<Home />} />} />
+                        <Route index element={<Navigate to={`${Src}/login`} />} />
+                        <Route path={`${Src}/login`} element={<Login />} />
+                        <Route path={`${Src}/dashboard`} element={<ProtectedRoute element={<Home />} />} />
                     </Routes>
                 </Router>
             </div>
