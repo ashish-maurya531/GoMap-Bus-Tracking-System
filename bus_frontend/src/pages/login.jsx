@@ -44,7 +44,7 @@ const Login = () => {
     }
 
         try {
-            const response = await axios.post(`${Src}/login`, { adminId, password });
+            const response = await axios.post(`https://gomap-nine.vercel.app/login`, { adminId, password });
             console.log("api hit");
             console.log(response.data)
             if (response.data.message===`Login successful! Welcome ${adminId}` && response.data.status==200 ){
