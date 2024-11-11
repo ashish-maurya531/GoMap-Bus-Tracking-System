@@ -136,38 +136,38 @@ function DashboardComponent() {
       <div className='main-cards'>
         <div className='card'>
           <div className='card-inner'>
-            <h3>Bus</h3>
-            <span className="material-symbols-outlined">dashboard</span>
+            <h2>Bus</h2>
           </div>
           <h1>{busesCount}/50</h1>
+            <span className="card-icon material-symbols-outlined">directions_bus</span>
         </div>
         <div className='card' onClick={() => toggleModal('driver')}>
           <div className='card-inner'>
-            <h3>Driver</h3>
-            <span className="material-symbols-outlined">dashboard</span>
+            <h2>Driver</h2>
           </div>
           <h1>{driversCount}/24</h1>
+            <span className="card-icon material-symbols-outlined">groups</span>
         </div>
         <div className='card' onClick={() => toggleModal('notice')}>
           <div className='card-inner'>
-            <h3>Notice</h3>
-            <span className="material-symbols-outlined">dashboard</span>
+            <h2>Notice</h2>
           </div>
           <h1>33</h1>
+            <span className=" card-icon material-symbols-outlined">contract_edit</span>
         </div>
         <div className='card' onClick={() => toggleModal('alert')}>
           <div className='card-inner'>
-            <h3>ALERTS</h3>
-            <span className="material-symbols-outlined">dashboard</span>
+            <h2>Alerts</h2>
           </div>
           <h1>42</h1>
+            <span className="card-icon material-symbols-outlined">bus_alert</span>
         </div>
       </div>
 
       <hr />
 
       <div className="map-container">
-        <div style={{ width: "100%", height: "54vh", overflow: "hidden" }} id="central-map"></div>
+        <div style={{ width: "100%", height: "59vh", overflow: "hidden" }} id="central-map"></div>
       </div>
 
       <hr />
