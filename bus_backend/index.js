@@ -1,5 +1,4 @@
 const express =require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const fs = require('fs-extra');
@@ -8,21 +7,14 @@ const cors = require('cors'); // To allow cross-origin requests
 require('dotenv').config();
 
 
-const db = require('./db');
-
-
 const app = express();
 const port = 5000;
-const allowedOrigins = ['http://localhost:5173', 'https://gomap-nine.vercel.app'];
-app.use(cors({
-  origin: function (origin, callback) {
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}));
+app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: 'https://gomap-nine.vercel.app' }));
+app.use((req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+   
+  });
 
 
 app.use(bodyParser.json());
