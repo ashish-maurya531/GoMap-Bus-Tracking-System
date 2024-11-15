@@ -13,7 +13,7 @@ const db = require('./db');
 
 const app = express();
 const port = 5000;
-const allowedOrigins = ['http://localhost:5173', 'https://go-map-backend.vercel.app'];
+const allowedOrigins = ['http://localhost:5173', 'https://gomap-nine.vercel.app'];
 app.use(cors({
   origin: function (origin, callback) {
     if (allowedOrigins.includes(origin) || !origin) {
