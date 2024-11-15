@@ -9,12 +9,7 @@ require('dotenv').config();
 
 const app = express();
 const port = 5000;
-app.use(cors({ origin: 'http://localhost:5173' }));
-app.use(cors({ origin: 'https://gomap-nine.vercel.app' }));
-app.use((req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-   
-  });
+app.use(cors());
 
 
 app.use(bodyParser.json());
