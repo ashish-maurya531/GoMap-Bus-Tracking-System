@@ -10,7 +10,13 @@ const qs = require('qs');
 
 const app = express();
 const port = 5000;
-app.use(cors());
+const corsOptions = {
+    origin: 'https://gomap-nine.vercel.app', // Allow only your frontend origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
+    credentials: true, // Allow cookies and credentials
+};
+
+app.use(cors(corsOptions));
 
 
 app.use(bodyParser.json());
