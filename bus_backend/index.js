@@ -17,7 +17,7 @@ const corsOptions = {
 };
 
 const corsOptions2 = {
-    origin: 'http://localhost:5173/', // Allow only your frontend origin
+    origin: 'http://localhost:5173', // Allow only your frontend origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
     credentials: true, // Allow cookies and credentials
 };
