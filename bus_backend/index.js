@@ -342,12 +342,22 @@ app.get('/getdriverStatus/:id',async(req,res)=>{
 
 // get running buses data
 app.get("/runningBuses",async(req, res)=>{
-    try{
+    try {
         const result = await client.db("location").collection("driverloc").find().toArray();
-        // console.log("result: " + JSON.stringify(result));
+        const updatedResult = await Promise.all(result.map(async (e) => {
+            const driver_name = await client.db("location").collection("driverInfo").findOne({ id: e.driver_id }, { projection: { name: 1, _id: 0 } })
+            return {
+                ...e,
+                driverName: driver_name ? driver_name.name : "abc",
+            };
+        })
+        );
+      
+        console.log(updatedResult);
+        
         res.json({
             status: 200,
-            data: result
+            data: updatedResult
         })
     }
     catch(err){

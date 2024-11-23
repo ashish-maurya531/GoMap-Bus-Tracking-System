@@ -183,7 +183,7 @@ function DashboardComponent() {
             <ul>
               {driverLoc.map((bus) => (
                 <li key={bus.driver_id}>
-                  <span>Name: ABC</span>
+                  <span>Name: {bus.driverName}</span>
                   <span>Bus No: {bus.busno}</span>
                   <span>Driver ID: {bus.driver_id}</span>
                 </li>
