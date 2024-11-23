@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://eren820:eren820@atlascluster.b11ukxt.mongodb.net/');
+require('dotenv').config();
+mongoose.connect(`mongodb+srv://${process.env.MONGODB_NAME}:${process.env.MONGODB_NAME}@atlascluster.b11ukxt.mongodb.net/`);
 var conn = mongoose.connection;
 conn.on('connected', function() {
     console.log('database is connected successfully');
