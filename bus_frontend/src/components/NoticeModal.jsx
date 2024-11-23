@@ -4,8 +4,8 @@ import './noticeModal.css';
 import { Worker } from '@react-pdf-viewer/core';
 import { Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
-const Src = import.meta.env.VITE_Src;
 
+const Src = import.meta.env.VITE_Src;
 
 function NoticeModal({ showNoticeModal, toggleModal }) {
   const [notices, setNotices] = useState([]);
@@ -14,14 +14,14 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
   const [loading, setLoading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  
+  const [uploadProgress, setUploadProgress] = useState(0); // Progress state
 
   const fetchNotices = async () => {
     try {
       const response = await axios.get(`${Src}/notices`);
       setNotices(response.data);
     } catch (error) {
-      console.error('Error fetching notices:', error);
+      console.log('Error fetching notices:', error);
     }
   };
 
@@ -42,9 +42,14 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
     try {
       await axios.post(`${Src}/uploadNotice`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted); // Update progress state
+        },
       });
-      setPdfName(''); // Clear the name field after upload
-      fetchNotices(); // Refresh the list
+      setSelectedFile(null); // Clear selected file after upload
+      setUploadProgress(0); // Reset progress
+      fetchNotices(); // Refresh notices
     } catch (error) {
       console.error('Error uploading notice:', error);
     }
@@ -95,10 +100,14 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
                 </div>
               )}
               <input type="file" accept="application/pdf" onChange={handleFileChange} />
-             
-              <button onClick={uploadNotice} disabled={!selectedFile}>
-                Upload Notice
+              
+              <button onClick={uploadNotice} disabled={!selectedFile || uploadProgress !== 0}>
+                {uploadProgress > 0 && uploadProgress < 100
+                  ? `Uploading... ${uploadProgress}%`
+                  : 'Upload Notice'}
               </button>
+
+            
             </div>
 
             {/* PDF Modal */}
@@ -109,12 +118,9 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
                   {loading ? (
                     <p>Loading PDF...</p>
                   ) : (
-
-                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-
-                    
-                    <Viewer fileUrl={selectedPdf} />
-                </Worker>
+                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                      <Viewer fileUrl={selectedPdf} />
+                    </Worker>
                   )}
                 </div>
               </div>
