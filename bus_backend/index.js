@@ -7,7 +7,7 @@ const cors = require('cors'); // To allow cross-origin requests
 require('dotenv').config();
 const axios = require('axios');
 const qs = require('qs');
-const helmet = require('helmet');
+
 
 const app = express();
 const port = 5000;
@@ -28,29 +28,13 @@ app.use((req, res, next) => {
 app.options('*', cors(corsOptions));
 
 
-app.use(
-    helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          imgSrc: ["'self'", "data:"],
-        },
-      },
-    })
-  );
+
 
 
 
 
 
 app.use(bodyParser.json());
-app.use((req, res, next) => {
-    res.setHeader(
-      'Content-Security-Policy',
-      "default-src 'self'; img-src 'self' data:; connect-src 'self'; script-src 'self'; style-src 'self';"
-    );
-    next();
-  });
 
 app.listen(port,()=>{
     console.log(`Server is running on port :${port}`);
@@ -59,6 +43,14 @@ app.listen(port,()=>{
 //code for pdf file upload
 // Set storage for uploaded files
 app.use('/notices', express.static(path.join(__dirname, 'notices')));
+app.use((req, res, next) => {
+    res.setHeader(
+      'Content-Security-Policy',
+      "default-src 'self'; img-src 'self' data:; connect-src 'self'; script-src 'self'; style-src 'self';"
+    );
+    next();
+  });
+
 
 // Multer storage for PDF uploads
 const storage = multer.diskStorage({
