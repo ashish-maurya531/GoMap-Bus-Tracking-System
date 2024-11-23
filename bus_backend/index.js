@@ -5,7 +5,8 @@ const fs = require('fs-extra');
 const path = require('path');
 const cors = require('cors'); // To allow cross-origin requests
 require('dotenv').config();
-
+const axios = require('axios');
+const qs = require('qs');
 
 const app = express();
 const port = 5000;
@@ -352,8 +353,9 @@ app.get("/runningBuses",async(req, res)=>{
             };
         })
         );
+       
       
-        console.log(updatedResult);
+        // console.log(updatedResult);
         
         res.json({
             status: 200,
@@ -364,3 +366,102 @@ app.get("/runningBuses",async(req, res)=>{
         console.log(err);
     }
 })
+
+
+
+
+// const OLA_MAPS_API_KEY = process.env.OLA_MAPS_API_KEY;
+// app.get('/map-style', async (req, res) => {
+//     try {
+//       const { url } = req.query; // The style URL requested by the client
+//     //   const modifiedUrl = url.replace('app.olamaps.io', 'api.olamaps.io') + `?api_key=${OLA_MAPS_API_KEY}`;
+//       const modifiedUrl = url.replace('app.olamaps.io', 'api.olamaps.io') ;
+//       console.log(modifiedUrl);
+//       const token = await accessToken();
+//       console.log("token: " + token);
+//     //   const response = await axios.get(modifiedUrl);
+//       const response = await axios.get(
+//         modifiedUrl,
+//         {
+//           headers: {
+//             Authorization: `Bearer ${accessToken}`, // Add Authorization header
+//           },
+//         }
+//       );
+//       res.send(response.data); // Forward the response back to the client
+//     } catch (error) {
+//       console.error('Error fetching map style:', error);
+//       res.status(500).send('Internal Server Error');
+//     }
+//   });
+
+// //   # Define client credentials
+// // clientId="client_id"
+// // clientSecret="client_secret"
+
+// // # Define the search text for the autocomplete query
+// // searchText="some_search_query"
+
+// // # Fetch the access token
+// // accessToken=$(
+// //   curl --silent --request POST \
+// //   --location "https://account.olamaps.io/realms/olamaps/protocol/openid-connect/token" \
+// //   --data "grant_type=client_credentials" \
+// //   --data "scope=openid" \
+// //   --data "client_id=${clientId}" \
+// //   --data "client_secret=${clientSecret}" | jq -r '.access_token'
+// // )
+
+// async function accessToken() {
+//     try {
+//       const clientId = process.env.OLA_MAPS_CLIENT_ID;
+//       const clientSecret = process.env.OLA_MAPS_CLIENT_SECRET;
+  
+//       console.log("client_id:", clientId);
+//       console.log("client_secret:", clientSecret);
+  
+//       // Format data as URL-encoded
+//       const requestBody = qs.stringify({
+//         grant_type: 'client_credentials',
+//         scope: 'openid',
+//         client_id: clientId,
+//         client_secret: clientSecret,
+//       });
+  
+//       // Make the request with correct headers
+//       const response = await axios.post(
+//         'https://account.olamaps.io/realms/olamaps/protocol/openid-connect/token',
+//         requestBody,
+//         {
+//           headers: {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//           },
+//         }
+//       );
+  
+//     //   console.log("token:", response.data.access_token);
+//       return response.data.access_token
+  
+//     } catch (error) {
+//       console.error('Error fetching access token:', error?.response?.data || error.message);
+  
+//       // Avoid sending another response if headers are already sent
+//     //   if (!res.headersSent) {
+//     //     return res.status(500).send('Internal Server Error');
+//     //   }
+//     }
+//   }
+
+// async function getAutocompleteSuggestions(searchText) {
+//     try {
+//         const response = await axios.get(`https://api.olamaps.io/v1/autocomplete?query=${searchText}`, {
+//             headers: {
+//                 Authorization: `Bearer ${accessToken}`,
+//             },
+//         });
+//         return response.data;
+//         } catch (error) {
+//             console.error('Error fetching autocomplete suggestions:', error);
+//             return [];
+//         }
+//         }

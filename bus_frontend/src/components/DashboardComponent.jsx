@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { Map as MapLibreMap, NavigationControl, Marker, Popup } from 'maplibre-gl';
+import { NavigationControl, Marker, Popup } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+
+import '../../public/style.css'; // Update path as needed
+import '../../public/olamaps-js-sdk.es'
 import NoticeModal from './NoticeModal';  // Assuming NoticeModal is in the same directory
 const apikey = import.meta.env.VITE_ola_ID;
 const Src = import.meta.env.VITE_Src;
@@ -72,18 +75,14 @@ function DashboardComponent() {
 
   useEffect(() => {
     if (mapRef.current) return;
-
-    const map = new MapLibreMap({
-      container: 'central-map',
-      center: [79.43612420499357, 28.475825009410213],
-      zoom: 14,
-      style: 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json',
-      transformRequest: (url, resourceType) => {
-        url = url.replace('app.olamaps.io', 'api.olamaps.io');
-        url += url.includes('?') ? `&api_key=${apikey}` : `?api_key=${apikey}`;
-        return { url, resourceType };
-      },
-    });
+    const { OlaMapsSDK } = window;
+    const olaMaps = new OlaMapsSDK.OlaMaps({ apiKey: apikey });
+    const map = olaMaps.init({
+            style: 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json',
+            container: 'map',
+            center: [79.43612420499357, 28.475825009410213],
+            zoom: 14,
+          });
 
     map.addControl(new NavigationControl({ visualizePitch: false, showCompass: true }), 'top-right');
 
@@ -167,7 +166,9 @@ function DashboardComponent() {
       <hr />
 
       <div className="map-container">
-        <div style={{ width: "100%", height: "59vh", overflow: "hidden" }} id="central-map"></div>
+        <div style={{ width: "100%", height: "59vh", overflow: "hidden" }} id="map"></div>
+        
+        
       </div>
 
       <hr />

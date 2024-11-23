@@ -14,7 +14,7 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
   const [loading, setLoading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [pdfName, setPdfName] = useState('');
+  
 
   const fetchNotices = async () => {
     try {
@@ -30,7 +30,7 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
   };
 
   const uploadNotice = async () => {
-    if (!selectedFile || !pdfName) return;
+    if (!selectedFile) return;
     if (selectedFile.size > 10 * 1024 * 1024) {
       setUploadError('File size is greater than 10MB');
       return;
@@ -95,13 +95,8 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
                 </div>
               )}
               <input type="file" accept="application/pdf" onChange={handleFileChange} />
-              <input
-                type="text"
-                value={pdfName}
-                onChange={(e) => setPdfName(e.target.value)}
-                placeholder="Enter PDF name"
-              />
-              <button onClick={uploadNotice} disabled={!selectedFile || !pdfName}>
+             
+              <button onClick={uploadNotice} disabled={!selectedFile}>
                 Upload Notice
               </button>
             </div>
