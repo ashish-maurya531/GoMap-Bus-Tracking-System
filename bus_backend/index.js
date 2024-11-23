@@ -7,6 +7,7 @@ const cors = require('cors'); // To allow cross-origin requests
 require('dotenv').config();
 const axios = require('axios');
 const qs = require('qs');
+const helmet = require('helmet');
 
 const app = express();
 const port = 5000;
@@ -25,6 +26,18 @@ app.use((req, res, next) => {
 });
 
 app.options('*', cors(corsOptions));
+
+
+app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          imgSrc: ["'self'", "data:"],
+        },
+      },
+    })
+  );
 
 
 
