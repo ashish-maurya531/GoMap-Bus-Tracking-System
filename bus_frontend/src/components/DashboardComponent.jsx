@@ -3,10 +3,10 @@ import axios from 'axios';
 import { NavigationControl, Marker, Popup } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-// import '../../public/style.css'; 
-// import '../../public/olamaps-js-sdk.es'
-import 'style.css'; 
-import 'olamaps-js-sdk.es'
+import '../../public/style.css'; 
+import '../../public/olamaps-js-sdk.es'
+// import 'style.css'; 
+// import 'olamaps-js-sdk.es'
 import NoticeModal from './NoticeModal';  // Assuming NoticeModal is in the same directory
 const apikey = import.meta.env.VITE_ola_ID;
 const Src = import.meta.env.VITE_Src;
