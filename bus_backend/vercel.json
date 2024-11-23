@@ -21,6 +21,15 @@
           "value": "default-src 'self'; img-src 'self' data:; connect-src 'self'; script-src 'self'; style-src 'self';"
         }
       ]
-    }
+    },
+    {
+        "source": "/notices",
+        "headers": [
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'self'; connect-src *;"
+          }
+        ]
+      }
   ]
 }
