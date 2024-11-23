@@ -11,21 +11,21 @@ const qs = require('qs');
 
 const app = express();
 const port = 5000;
-const corsOptions = {
-    origin: 'https://gomap-nine.vercel.app', // Allow only your frontend origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
-    credentials: true, // Allow cookies and credentials
-};
+// const corsOptions = {
+//     origin: 'https://gomap-nine.vercel.app', // Allow only your frontend origin
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
+//     credentials: true, // Allow cookies and credentials
+// };
 
-app.use(cors(corsOptions));
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'https://gomap-nine.vercel.app');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
+app.use(cors());
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', 'https://gomap-nine.vercel.app');
+//     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//     next();
+// });
 
-app.options('*', cors(corsOptions));
+// app.options('*', cors(corsOptions));
 
 
 
@@ -43,13 +43,13 @@ app.listen(port,()=>{
 //code for pdf file upload
 // Set storage for uploaded files
 app.use('/notices', express.static(path.join(__dirname, 'notices')));
-app.use((req, res, next) => {
-    res.setHeader(
-      'Content-Security-Policy',
-      "default-src 'self'; img-src 'self' data:; connect-src 'self'; script-src 'self'; style-src 'self';"
-    );
-    next();
-  });
+// app.use((req, res, next) => {
+//     res.setHeader(
+//       'Content-Security-Policy',
+//       "default-src 'self'; img-src 'self' data:; connect-src 'self'; script-src 'self'; style-src 'self';"
+//     );
+//     next();
+//   });
 
 
 // Multer storage for PDF uploads

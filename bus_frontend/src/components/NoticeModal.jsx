@@ -71,13 +71,16 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
   return (
     <>
       {showNoticeModal && (
-        <div className="modal-overlay" onClick={() => toggleModal('notice')}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => toggleModal('notice')}>×</button>
+        <div className="notice-modal-overlay" onClick={() => toggleModal('notice')}>
+          <div className="notice-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="notice-close-btn" onClick={() => toggleModal('notice')}>×</button>
             <h2>Latest Notices</h2>
-
+            <hr></hr>
+  
             {/* Notices List */}
-            <ul>
+            <div className="notice-main">
+            <div className="notice-modal-left">
+            <ul className="notice-ul">
               {notices.length === 0 ? (
                 <li>No PDF uploaded so far.</li>
               ) : (
@@ -90,31 +93,50 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
                 ))
               )}
             </ul>
-
+            </div>
+  
             {/* Upload Section */}
-            <div className="upload-section">
+            <div className="notice-modal-right">
+            <div className="notice-upload-section">
               {uploadError && (
-                <div className="error-modal">
+                <div className="notice-error-modal">
                   <p>{uploadError}</p>
                   <button onClick={() => setUploadError(null)}>OK</button>
                 </div>
               )}
-              <input type="file" accept="application/pdf" onChange={handleFileChange} />
-              
-              <button onClick={uploadNotice} disabled={!selectedFile || uploadProgress !== 0}>
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileChange}
+              />
+              <button
+                onClick={uploadNotice}
+                disabled={!selectedFile || uploadProgress !== 0}
+              >
                 {uploadProgress > 0 && uploadProgress < 100
                   ? `Uploading... ${uploadProgress}%`
                   : 'Upload Notice'}
               </button>
-
-            
             </div>
-
+            </div>
+            </div>
+  
             {/* PDF Modal */}
             {showPdfModal && (
-              <div className="pdf-modal-overlay" onClick={() => setShowPdfModal(false)}>
-                <div className="pdf-modal-content" onClick={(e) => e.stopPropagation()}>
-                  <button className="pdf-modal-close-btn" onClick={() => setShowPdfModal(false)}>×</button>
+              <div
+                className="notice-pdf-modal-overlay"
+                onClick={() => setShowPdfModal(false)}
+              >
+                <div
+                  className="notice-pdf-modal-content"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    className="notice-pdf-modal-close-btn"
+                    onClick={() => setShowPdfModal(false)}
+                  >
+                    ×
+                  </button>
                   {loading ? (
                     <p>Loading PDF...</p>
                   ) : (
@@ -131,5 +153,4 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
     </>
   );
 }
-
 export default NoticeModal;
