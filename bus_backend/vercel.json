@@ -1,35 +1,17 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "index.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "index.js"
-        }
-    ],
-    "headers": [
-    {
-      "source": "/(.*)", 
-      "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; img-src 'self' data:; connect-src 'self'; script-src 'self'; style-src 'self';"
-        }
-      ]
-    },
-    {
-        "source": "/notices",
-        "headers": [
-          {
-            "key": "Content-Security-Policy",
-            "value": "default-src 'self'; connect-src *;"
-          }
-        ]
+  "version": 2,
+  "builds": [
+      {
+          "src": "index.js",
+          "use": "@vercel/node"
+      }
+  ],
+  "routes": [
+      {
+          "src": "/(.*)",
+          "dest": "index.js"
       }
   ]
+  
+
 }

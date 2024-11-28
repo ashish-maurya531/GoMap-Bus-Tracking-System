@@ -32,7 +32,7 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
   const uploadNotice = async () => {
     if (!selectedFile) return;
     if (selectedFile.size > 10 * 1024 * 1024) {
-      setUploadError('File size is greater than 10MB');
+      setUploadError('Opps! File size is greater than 10MB');
       return;
     }
 
@@ -98,12 +98,16 @@ function NoticeModal({ showNoticeModal, toggleModal }) {
             {/* Upload Section */}
             <div className="notice-modal-right">
             <div className="notice-upload-section">
-              {uploadError && (
-                <div className="notice-error-modal">
-                  <p>{uploadError}</p>
-                  <button onClick={() => setUploadError(null)}>OK</button>
-                </div>
-              )}
+                  {uploadError && (
+                    <div className="notice-error-backdrop">
+                      <div className="notice-error-modal">
+                        <p>{uploadError}</p>
+                        <button onClick={() => {setUploadError(null)
+                          setSelectedPdf("")
+                        }}>OK</button>
+                      </div>
+                    </div>
+                  )}
               <input
                 type="file"
                 accept="application/pdf"
