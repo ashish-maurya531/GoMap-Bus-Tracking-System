@@ -7,7 +7,7 @@ const cors = require('cors'); // To allow cross-origin requests
 require('dotenv').config();
 const axios = require('axios');
 const qs = require('qs');
-
+const mongoose = require('mongoose');
 
 const app = express();
 const port = 5000;
@@ -205,9 +205,75 @@ app.post('/route', async (req, res) => {
         console.log(err);
     }
 })
+// const RouteSchema = new mongoose.Schema({
+//     busNo: String,
+//     departureTime: String,
+//     arrivalTime: String,
+//     route: String
+//   })
+  
+//   const Route = mongoose.model('Route', RouteSchema)
+  
+//   // GET route to fetch all routes
+//   app.get('/api/routes', async (req, res) => {
+//     try {
+//       const routes = await Route.find()
+//       res.json(routes)
+//     } catch (error) {
+//       console.error('Error fetching routes:', error)
+//       res.status(500).json({ error: 'Internal Server Error' })
+//     }
+//   })
+  
+//   // POST route to save routes
+//   app.post('/api/routes', async (req, res) => {
+//     try {
+//       // Clear existing routes
+//       await Route.deleteMany({})
+  
+//       // Insert new routes
+//       await Route.insertMany(req.body)
+  
+//       res.json({ message: 'Routes saved successfully' })
+//     } catch (error) {
+//       console.error('Error saving routes:', error)
+//       res.status(500).json({ error: 'Internal Server Error' })
+//     }
+//   })
 
+app.get('/api/routes', async (req, res) => {
+    try {
+        const routes = await client.db("location").collection("routes").find().toArray();
+        res.json({
+            status: 200,
+            data: routes,
+            message: "Routes fetched successfully!"
+        });
+    } catch (error) {
+        console.error('Error fetching routes:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
+// Save routes (POST)
+app.post('/api/routes', async (req, res) => {
+    try {
+        // Clear existing routes
+        await client.db("location").collection("routes").deleteMany({});
 
+        // Insert new routes
+        const result = await client.db("location").collection("routes").insertMany(req.body);
+
+        res.json({
+            status: 200,
+            data: result,
+            message: 'Routes saved successfully!'
+        });
+    } catch (error) {
+        console.error('Error saving routes:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 //driver routes
 //get current id count
