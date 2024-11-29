@@ -20,63 +20,62 @@ const Login = () => {
 
 
 
-    const handleLogin = async()=>{
+    const handleLogin = async () => {
         await setIsLoading(true)
-        
-     
-            console.log("test", adminId, password)
-    if(!adminId) {
-        // setError("Please enter admin Id")
-        // tostShow("Please Your Id");
-        toast.info('Please Enter Your Admin Id', {});
-      
-        setIsLoading(false)
-        return;
-    }
-    if(!password) {
-        // setError("Please enter password")
 
-        // tostShow("Please Your Password");
-        toast.info('Please Enter Your Password', {});
 
-        setIsLoading(false)
-        return;
-    }
+        if (!adminId) {
+            // setError("Please enter admin Id")
+            // tostShow("Please Your Id");
+            toast.info('Please Enter Your Admin Id', {});
+
+            setIsLoading(false)
+            return;
+        }
+        if (!password) {
+            // setError("Please enter password")
+
+            // tostShow("Please Your Password");
+            toast.info('Please Enter Your Password', {});
+
+            setIsLoading(false)
+            return;
+        }
 
         try {
             const response = await axios.post(`${Src}/login`, { adminId, password });
-            console.log("api hit");
-            console.log(response.data)
-            if (response.data.message===`Login successful! Welcome ${adminId}` && response.data.status==200 ){
+
+
+            if (response.data.message === `Login successful! Welcome ${adminId}` && response.data.status == 200) {
                 login();
-                console.log(adminId + ' ' + password);
+
                 // tostShow(response.data.message);
                 toast.success(response.data.message, {
                     autoClose: 2000,
                 });
 
-                
-                
-                setTimeout( ()=>{navigate(`/dashboard`)}, 2000);
+
+
+                setTimeout(() => { navigate(`/dashboard`) }, 2000);
             }
-            else{
+            else {
                 // setError(response?.data?.message)
                 // tostShow(response.data.message);
                 toast.error(response.data.message, {});
 
-                console.log("error",adminId + ' ' + password);
+
                 setIsLoading(false)
 
-  
-            }
-             
-          } catch (error) {
-                // setError(error?.message)            
-              console.error('Login failed:', error);
-              setIsLoading(false)
-          } 
 
-    
+            }
+
+        } catch (error) {
+            // setError(error?.message)            
+            console.error('Login failed:', error);
+            setIsLoading(false)
+        }
+
+
     };
 
     return (
@@ -91,7 +90,7 @@ const Login = () => {
             </h2>
             <form className="login-page-form" >
                 <h2 className="login-page-title">ADMIN LOGIN</h2>
-               
+
                 <p className="login-page-subtitle">Please enter your login ID and password!</p>
 
                 {/* {error ? <p style={{
@@ -124,20 +123,20 @@ const Login = () => {
                     Forgot password?
                 </a>
                 <button
-                disabled={isLoading}
-                className="login-page-button" onClick={() => {
-                    
-                    handleLogin();
+                    disabled={isLoading}
+                    className="login-page-button" onClick={() => {
+
+                        handleLogin();
                     }}>
                     {isLoading ? "LOGING IN..." : "LOGIN"}
                 </button>
             </form>
             <ToastContainer
-            position="top-center"
-            autoClose={2000}
-            theme="dark"
-            limit={1}
-         
+                position="top-center"
+                autoClose={2000}
+                theme="dark"
+                limit={1}
+
             />
         </div>
     );

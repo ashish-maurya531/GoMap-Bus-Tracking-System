@@ -1,25 +1,9 @@
 import React, { useState } from 'react';
-import '../App.css'; // Ensure your styles are scoped properly
+import '../App.css'; 
 import { FaUserCircle } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
 
 function AboutComponent() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [problem, setProblem] = useState('');
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission (e.g., send data to API)
-        console.log('Name:', name);
-        console.log('Email:', email);
-        console.log('Problem:', problem);
-        // Clear the form fields after submission
-        setName('');
-        setEmail('');
-        setProblem('');
-    };
-
     return (
         <>
             <h1>Super Admin</h1>
@@ -50,7 +34,6 @@ function AboutComponent() {
             <HiOutlineMail size={24} style={{ marginRight: '10px', verticalAlign:'middle'}} />
             ashishanshumaurya1572002@gmail.com
         </h3>
-        
             </div>
         </>
     );

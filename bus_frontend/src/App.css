@@ -840,7 +840,7 @@ body {
 .driverList-table th,
 .driverList-table td {
   padding: 12px 15px;
-  border-bottom: 1px solid grey;
+  border-bottom: 3px solid #2d3648;
   text-align: center;
   width:22em;
   /* border-radius: 20px; */

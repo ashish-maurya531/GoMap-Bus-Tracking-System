@@ -2,15 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { NavigationControl, Marker, Popup } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-
-// import 'style.css'; 
-// import 'olamaps-js-sdk.es'
-import NoticeModal from './NoticeModal';  // Assuming NoticeModal is in the same directory
+import NoticeModal from './NoticeModal'; 
 const apikey = import.meta.env.VITE_ola_ID;
 const Src = import.meta.env.VITE_Src;
-
-
-
 function DashboardComponent() {
   const [driverLoc, setDriverLoc] = useState([]);
   const [busesCount, setBusesCount] = useState(0);
@@ -115,7 +109,7 @@ function DashboardComponent() {
       try {
         drawLine(map, [79.43612420499357, 28.475825009410213], busCoords);
       } catch (error) {
-        console.log("Error drawing line: ", error);
+        // console.log("Error drawing line: ", error);
       }
     });
   }, [driverLoc]);

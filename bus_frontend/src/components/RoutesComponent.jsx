@@ -21,9 +21,7 @@ function BusRouteManager() {
   const fetchRoutes = async () => {
     try {
       const response = await axios.get(`${Src}/api/routes`)
-      console.log(response?.data?.data)
       setRoutes(Array.isArray(response.data.data)? response.data.data : [])
-      console.log("-----"+routes)
     } catch (error) {
       console.error('Error fetching routes:', error)
       setRoutes([]) // Set to empty array if fetch fails

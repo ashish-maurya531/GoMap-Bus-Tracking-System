@@ -1,5 +1,4 @@
 import * as Realm from "realm-web"
-// require('dotenv').config();
 const APP_ID=import.meta.env.VITE_APP_ID;
 const app=new Realm.App(APP_ID);
 
@@ -8,12 +7,8 @@ const app=new Realm.App(APP_ID);
 
 export const userCreation=async(email,pass)=>{
     try{
-        // console.log("------------"+email,pass)
         await app.emailPasswordAuth.registerUser({email: email, password:pass})
         console.log("relem user created successfully")
-        // console.log(ADMIN_API_URL);
-        // console.log(API_KEY);
-
     }
     catch(error){
         console.log("error creating user",error)
@@ -25,11 +20,9 @@ export const userCreation=async(email,pass)=>{
 //delete user from relem
 export const deleteRelemUser = async(userEmail,userPassword)=>{
     try {
-        console.log(userEmail,userPassword)
-        
+        // console.log(userEmail,userPassword)
         await app.logIn(Realm.Credentials.emailPassword(userEmail, userPassword));
-       
-        console.log("Current user:", app.currentUser);
+        // console.log("Current user:", app.currentUser);
         try{
             await app.deleteUser({userId:`${userEmail}`});
             

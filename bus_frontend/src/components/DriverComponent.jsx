@@ -18,7 +18,7 @@ function DriverComponent() {
     const [isOnline, setIsOnline] = useState(navigator.onLine); // Online status
 
     const [isAddDriverVisible, setIsAddDriverVisible] = useState(false);
-    // Reference to update driver list
+
     const driverListRef = useRef();
         
     const openAddDriver = () => {

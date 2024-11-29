@@ -142,8 +142,8 @@ app.get('/', (req, res) => {
 app.post('/login',async(req, res)=> {
 
     const { adminId, password } = req.body;
-    console.log('Username:', adminId);
-    console.log('Password:', password);
+    // console.log('Username:', adminId);
+    // console.log('Password:', password);
     try{
         const response = await client.db("location").collection("adminLogin").findOne({username:adminId, pass:password})
        
@@ -205,41 +205,7 @@ app.post('/route', async (req, res) => {
         console.log(err);
     }
 })
-// const RouteSchema = new mongoose.Schema({
-//     busNo: String,
-//     departureTime: String,
-//     arrivalTime: String,
-//     route: String
-//   })
-  
-//   const Route = mongoose.model('Route', RouteSchema)
-  
-//   // GET route to fetch all routes
-//   app.get('/api/routes', async (req, res) => {
-//     try {
-//       const routes = await Route.find()
-//       res.json(routes)
-//     } catch (error) {
-//       console.error('Error fetching routes:', error)
-//       res.status(500).json({ error: 'Internal Server Error' })
-//     }
-//   })
-  
-//   // POST route to save routes
-//   app.post('/api/routes', async (req, res) => {
-//     try {
-//       // Clear existing routes
-//       await Route.deleteMany({})
-  
-//       // Insert new routes
-//       await Route.insertMany(req.body)
-  
-//       res.json({ message: 'Routes saved successfully' })
-//     } catch (error) {
-//       console.error('Error saving routes:', error)
-//       res.status(500).json({ error: 'Internal Server Error' })
-//     }
-//   })
+
 
 app.get('/api/routes', async (req, res) => {
     try {
@@ -284,7 +250,7 @@ let driverCollection = client.db("location").collection("driverIdNo")
 app.get('/idCount', async (req, res) => {
     try{
         const result = await driverCollection.find({}).toArray();;
-        console.log("result: " + JSON.stringify(result));
+        // console.log("result: " + JSON.stringify(result));
 res.json({
   
     data: result[0]?.idNoCount
@@ -298,7 +264,7 @@ res.json({
 
 app.post("/addDriver",async(req,res)=>{
     const {driverId,dName,dPhoneNo}=req.body;
-    console.log(req?.body)
+    // console.log(req?.body)
     if (!driverId||!dName || !dPhoneNo){
         res.json({
             status: 404,
@@ -317,7 +283,7 @@ app.post("/addDriver",async(req,res)=>{
             { $set: { idNoCount: driverId } } 
         )
 
-        console.log("adddriver", updateDriverCount)
+        // console.log("adddriver", updateDriverCount)
         res.json({
             status: 200,
             data: result,
@@ -353,11 +319,11 @@ app.get('/getdriver', async (req, res) => {
 
 app.delete('/deleteDriver/:id', async (req, res) => {
     const id=req.params.id;
-    console.log(id);
-    console.log(typeof (id))
+    // console.log(id);
+    // console.log(typeof (id))
     try {
         const result= await client.db("location").collection("driverInfo").deleteOne({id:id});
-        console.log(result)
+        // console.log(result)
         res.status(202).json({message:"Driver deleted successfully",result});
 
     } catch (error) {
@@ -384,7 +350,7 @@ app.put('/updateDriver/:id', async (req, res) =>{
 
 
         );
-        console.log(result)
+        // console.log(result)
         if (result.matchedCount===1){
             res.status(202).json({message:"Driver updated successfully",result});
 
@@ -407,7 +373,7 @@ app.put('/updateDriver/:id', async (req, res) =>{
 
 app.get('/getdriverStatus/:id',async(req,res)=>{
     const driverid = req.params.id;
-    console.log(driverid)
+    // console.log(driverid)
     try{
         const result = await client.db("location").collection("driverloc").findOne({driver_id:driverid});
         // console.log("result: " + JSON.stringify(result));
