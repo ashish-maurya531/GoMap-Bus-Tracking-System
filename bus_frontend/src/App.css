@@ -1480,7 +1480,9 @@ body {
 .pdf-modal-content iframe {
   border: none;
 }
-
+.new-about-email{
+  word-wrap: break-word;
+}
 
 
 
