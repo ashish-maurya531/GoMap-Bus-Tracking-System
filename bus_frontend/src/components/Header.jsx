@@ -22,7 +22,6 @@ function Header({OpenSidebar}) {
   return (
     <header className='header'>
         <div className='menu-icon'>
-          
             <span class="material-symbols-outlined" onClick={OpenSidebar}>menu_open</span>
         </div>
         <div className='header-left a' id="headName">

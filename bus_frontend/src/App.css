@@ -231,6 +231,12 @@ body {
   z-index: 12 !important;
 }
 
+
+
+
+
+/**/
+
 /* End Sidebar  */
 
 
@@ -462,26 +468,6 @@ body {
   position: relative;
   top:5px
 }
-/* 
-.route-container{
-  position :absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-30%,-50%);
-  height:60%;
-  width:40%;
-  background-color: #d50000;
-}
-
-.route-container{
-  color: #9e9ea4;
-  font-weight: bolder;
-  font-size: 20px;
-} */
-/* App.css or your main CSS file */
-/* App.css or your main CSS file */
-
-/* App.css or your main CSS file */
 
 .route-container {
   display: flex;
@@ -591,6 +577,9 @@ body {
   margin-bottom: 10px;
   text-align: center;
 
+}
+#addDriverh1{
+  cursor: pointer;
 }
 
 .addDriver-container div {
@@ -815,7 +804,7 @@ body {
 
 
 .driverList-container{
-  height: 48vh;
+  /* height: 48vh; */
   width:100%;
   background-color: #3a4660;
 }
@@ -830,13 +819,14 @@ body {
   align-items: center;
   
 }
+
 .driverList-table tbody {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   /* margin-top: 5px; */
-  max-height:36vh;
+  max-height:50vh;
   overflow-y: auto;
   flex-grow: 1;
   
@@ -866,14 +856,13 @@ body {
 
 .driverList-edit-button,
 .driverList-delete-button {
-  padding: 6px 12px;
-  margin-right: 5px;
-  font-size: 14px;
+  padding: 6px 10px;
+  margin-right: 8px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width:4rem
+ 
 }
 
 .driverList-edit-button {
@@ -899,7 +888,8 @@ body {
 @media (max-width: 768px) {
   
 .driverList-edit-button
-{  margin-bottom: 4px;
+{  
+  margin-bottom: 4px;
 
 }
 }

@@ -627,10 +627,10 @@ function BusRouteManager() {
                       onChange={(e) => updateRoute(route.id, 'route', e.target.value)}
                       placeholder="Route"
                       className={`newRoute-route-input newRoute-no-resize ${errors[route.id]?.route ? 'newRoute-error' : ''}`}
-                      rows="12"
+                      rows="1"
                     />
-                  </div>
                   <hr id="abc2"></hr>
+                  </div>
                 
                 <td className="newRoute-desktop-only">
                   <input
@@ -675,7 +675,7 @@ function BusRouteManager() {
             ))}
           </tbody>
         ) : (
-          <p>No routes available</p>
+          <p id="p-tag">No routes available</p>
         )}
         </table>
       </div>

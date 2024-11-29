@@ -151,14 +151,14 @@ function DashboardComponent() {
           <div className='card-inner'>
             <h2>Notice</h2>
           </div>
-          <h1>33</h1>
+          <h1>5</h1>
             <span className=" card-icon material-symbols-outlined">contract_edit</span>
         </div>
         <div className='card' onClick={() => toggleModal('alert')}>
           <div className='card-inner'>
             <h2>Alerts</h2>
           </div>
-          <h1>42</h1>
+          <h1>5</h1>
             <span className="card-icon material-symbols-outlined">bus_alert</span>
         </div>
       </div>

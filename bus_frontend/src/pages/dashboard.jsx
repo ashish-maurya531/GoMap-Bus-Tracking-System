@@ -1,103 +1,126 @@
-import React from 'react'
-import { useState } from 'react';
-//  { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } 
-//  from 'recharts';
-import Header from '../components/Header'
+import React, { useState, useEffect } from 'react';
+import Header from '../components/Header';
 import DashboardComponent from '../components/DashboardComponent';
 import RoutesComponent from '../components/RoutesComponent';
-
 import AnalyticComponent from '../components/AnalyticComponent';
 import DriverComponent from '../components/DriverComponent';
 import AboutComponent from '../components/AboutComponent';
 
 function Home() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
-  const OpenSidebar = () => {
-    setOpenSidebarToggle(!openSidebarToggle);
-};
-const [linkRoute, setLinkRoute] = useState('dashboard');
+  const [linkRoute, setLinkRoute] = useState('dashboard');
 
-    
-     
-console.log("link" ,linkRoute);
+  // Toggle sidebar open/close
+  const toggleSidebar = () => setOpenSidebarToggle((prev) => !prev);
+
+  // Close sidebar when clicking outside or switching routes
+  const closeSidebar = () => setOpenSidebarToggle(false);
+
+  // Close sidebar when clicking anywhere outside
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (!event.target.closest('#sidebar') && !event.target.closest('.menu-icon')) {
+        closeSidebar();
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, []);
+
   return (
     <>
-    <div className='grid-container'>
-     <Header OpenSidebar={OpenSidebar}/>
-     {/* sidebar */}
-     <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive": ""}>
-        <div className='sidebar-title'>
-            <div className='sidebar-brand'>
-            
-            <span class="material-symbols-outlined side-logo" id="span-sidebar-icon">pin_drop</span> Go Map
-            </div>
-            <span className='icon close_icon' onClick={OpenSidebar}>X</span>
-        </div>
+      <div className="grid-container">
+        <Header OpenSidebar={toggleSidebar} />
 
-        <ul className='sidebar-list'>
-            <li 
-            onClick={() => {
-              setLinkRoute('dashboard')
-            }}
-            className='sidebar-list-item'>
-                <span class="material-symbols-outlined" id="span-sidebar-icon">dashboard</span> Dashboard
+        {/* Sidebar */}
+        <aside id="sidebar" className={openSidebarToggle ? 'sidebar-responsive' : ''}>
+          <div className="sidebar-title">
+            <div className="sidebar-brand">
+              <span className="material-symbols-outlined side-logo" id="span-sidebar-icon">
+                pin_drop
+              </span>
+              Go Map
+            </div>
+            <span className="icon close_icon" onClick={closeSidebar}>
+              &#10005;
+            </span>
+          </div>
+
+          <ul className="sidebar-list">
+            <li
+              onClick={() => {
+                setLinkRoute('dashboard');
+                closeSidebar();
+              }}
+              className="sidebar-list-item"
+            >
+              <span className="material-symbols-outlined" id="span-sidebar-icon">
+                dashboard
+              </span>
+              Dashboard
             </li>
             <li
-            onClick={() => {
-              setLinkRoute('route')
-            }}
-            className='sidebar-list-item'>
-                <span class="material-symbols-outlined" id="span-sidebar-icon">alt_route</span> Routes
+              onClick={() => {
+                setLinkRoute('route');
+                closeSidebar();
+              }}
+              className="sidebar-list-item"
+            >
+              <span className="material-symbols-outlined" id="span-sidebar-icon">
+                alt_route
+              </span>
+              Routes
             </li>
             <li
-            onClick={() => {
-              setLinkRoute('driver')
-            }}
-            className='sidebar-list-item'>
-                <span class="material-symbols-outlined" id="span-sidebar-icon">groups</span> Drivers
+              onClick={() => {
+                setLinkRoute('driver');
+                closeSidebar();
+              }}
+              className="sidebar-list-item"
+            >
+              <span className="material-symbols-outlined" id="span-sidebar-icon">
+                groups
+              </span>
+              Drivers
             </li>
             <li
-            onClick={() => {
-              setLinkRoute('analytics')
-            }}
-            className='sidebar-list-item'>
-                <span class="material-symbols-outlined" id="span-sidebar-icon">monitoring</span> Analytics
+              onClick={() => {
+                setLinkRoute('analytics');
+                closeSidebar();
+              }}
+              className="sidebar-list-item"
+            >
+              <span className="material-symbols-outlined" id="span-sidebar-icon">
+                monitoring
+              </span>
+              Analytics
             </li>
-            <li 
-            onClick={() => {
-              setLinkRoute('about')
-            }}
-            className='sidebar-list-item'>
-                <span class="material-symbols-outlined" id="span-sidebar-icon">info</span> About
+            <li
+              onClick={() => {
+                setLinkRoute('about');
+                closeSidebar();
+              }}
+              className="sidebar-list-item"
+            >
+              <span className="material-symbols-outlined" id="span-sidebar-icon">
+                info
+              </span>
+              About
             </li>
-            
-        </ul>
-    </aside>
-    
-  
-    
-    <main className='main-container'>
-      {
-        linkRoute === 'dashboard'?
-        <DashboardComponent />
-        : linkRoute === 'route'?
-        <RoutesComponent />
-        : linkRoute === 'driver' ? 
-        <DriverComponent />
-        : linkRoute === 'analytics' ?
-        <AnalyticComponent />
-        : linkRoute === 'about' ?
-        <AboutComponent />
-        : null  // default to dashboard if none of the above conditions are met.  // This is a good practice to prevent potential bugs and make your code more robust.  // In this case, if the linkRoute does not match any of the specified conditions, it will default to the DashboardComponent.  // If you want to show a different default page, you can add that logic here.  // Note: This is just a basic example. Depending on your application's requirements, you might need to adjust this logic.  // For example, if you want to show a different component when the linkRoute is 'about', you would need to add a case for 'about' in the switch statement.  // Also, this code assumes that the 'DashboardComponent' and 'RoutesComponent' components are already defined and available for use.  //
-      }
-  
-    
-    </main>
-        </div>
+          </ul>
+        </aside>
+
+        {/* Main Content */}
+        <main className="main-container">
+          {linkRoute === 'dashboard' && <DashboardComponent />}
+          {linkRoute === 'route' && <RoutesComponent />}
+          {linkRoute === 'driver' && <DriverComponent />}
+          {linkRoute === 'analytics' && <AnalyticComponent />}
+          {linkRoute === 'about' && <AboutComponent />}
+        </main>
+      </div>
     </>
-  )
+  );
 }
 
-export default Home
-
-
+export default Home;

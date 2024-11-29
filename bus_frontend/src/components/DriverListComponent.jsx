@@ -667,6 +667,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { deleteRelemUser, updateRelemUser } from '../relem/relemService.js';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 const Src = import.meta.env.VITE_Src;
 
 
@@ -871,13 +872,13 @@ const DriverList = forwardRef((props, ref) => {
                                     className="driverList-edit-button" 
                                     onClick={() => openEditModal(driver)}
                                 >
-                                    Edit
+                                    <FaEdit size={15} />
                                 </button>
                                 <button 
                                     className="driverList-delete-button" 
                                     onClick={() => openDeleteModal(driver)}
                                 >
-                                    Delete
+                                    <FaTrash size={15} />
                                 </button>
                             </td>
                         </tr>
