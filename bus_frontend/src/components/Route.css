@@ -22,6 +22,7 @@
   overflow-x: auto;
   margin-bottom: 20px;
   width: 100%;
+  
 }
 
 .newRoute-table {
@@ -35,15 +36,21 @@
 }
 .newRoute-desktop-only{
   /* width:20px; */
-  margin:0px
+  margin:0px;
+  margin-right:0px;
+  padding-right: 100px;
+  /* border: 1px solid red; */
 }
 
 .newRoute-table th,
 .newRoute-table td {
   padding: 12px;
+  padding-right: 0px;
   text-align: left;
   color: #fff;
   border-bottom: 1px solid var(--newRoute-primary-bg);
+  /* border: 1px solid red; */
+
 }
 .abc{
   width: 2px;
@@ -51,6 +58,8 @@
 .newRoute-table th {
   background-color: var(--newRoute-accent-color);
   font-weight: bold;
+  
+
 }
 
 .newRoute-input,
@@ -59,23 +68,30 @@
 .newRoute-route-input {
   width: 100%;
   padding: 9px;
+  padding-right: 0px;
   height: 40px;
+  /* font-size: 1.2rem; */
   box-sizing: border-box;
   border: 1px solid var(--newRoute-secondary-bg);
-  border-radius: 4px;
+  border-radius: 5px;
   background-color: var(--newRoute-primary-bg);
   color: var(--newRoute-primary-text);
   margin-bottom: 1px;
+  /* border: 1px solid red; */
 
   outline: none;
 
 }
 .newRoute-small-input {
-  width: 150px;
+  width: 60px;
 }
 
 .newRoute-route-input {
   resize: vertical;
+}
+.wd{
+  width: 150px;
+  margin-right: 0px;
 }
 
 .newRoute-button-container {
@@ -186,10 +202,7 @@
     align-items: center;
   }
 
-  .newRoute-bus-no-input {
-    flex-grow: 1;
-    margin-right: 10px;
-  }
+
 
   .newRoute-icon-button {
     padding: 8px 16px;
@@ -241,6 +254,7 @@
   border-radius: 4px;
   padding: 8px;
   font-size: 14px;
+  width:40px;
 }
 
 .newRoute-time-input::-webkit-calendar-picker-indicator {

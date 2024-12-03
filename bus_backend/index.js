@@ -171,41 +171,43 @@ app.post('/login',async(req, res)=> {
 
 
 
+// //route api
+// app.get('/route', async (req, res) => {
+//     try {
+//         const result = await client.db("location").collection("routes").find().toArray();
+//         res.json({
+//             data: result[0].route
+//         })
+//     } catch (err) {
+//         console.log(err);
+//     }
+// })
+
+
+// //route update api
+// app.post('/route', async (req, res) => {
+//     const { route } = req.body;
+//     try {
+//         const result = await client.db("location").collection("routes").updateOne(
+
+//             { route_id: "1234" },   // Filter
+//             { $set: { route: route } }        // Update
+
+
+
+//         );
+//         res.json({
+//             status: 200,
+//             data: result,
+//             message: "successfully updated routes!"
+//         })
+//     } catch (err) {
+//         console.log(err);
+//     }
+// })
+
+
 //route api
-app.get('/route', async (req, res) => {
-    try {
-        const result = await client.db("location").collection("routes").find().toArray();
-        res.json({
-            data: result[0].route
-        })
-    } catch (err) {
-        console.log(err);
-    }
-})
-
-
-//route update api
-app.post('/route', async (req, res) => {
-    const { route } = req.body;
-    try {
-        const result = await client.db("location").collection("routes").updateOne(
-
-            { route_id: "1234" },   // Filter
-            { $set: { route: route } }        // Update
-
-
-
-        );
-        res.json({
-            status: 200,
-            data: result,
-            message: "successfully updated routes!"
-        })
-    } catch (err) {
-        console.log(err);
-    }
-})
-
 
 app.get('/api/routes', async (req, res) => {
     try {
